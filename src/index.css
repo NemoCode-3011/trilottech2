@@ -1,0 +1,165 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=Manrope:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap");
+
+@import "tailwindcss";
+@import "./styles/navbar.css";
+@import "./styles/animations.css";
+
+/* Class-based dark mode: toggled via ThemeContext, not just prefers-color-scheme */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-trilot-navy: #102a43;
+  --color-trilot-blue: #1769d1;
+  --color-trilot-sky: #bfddf5;
+  --color-trilot-paper: #f6f2ea;
+  --color-trilot-ink: #111820;
+  --color-trilot-coral: #d86b4c;
+
+  --font-display: "Space Grotesk", sans-serif;
+  --font-body: "Manrope", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+
+  --ease-trilot: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Semantic surface tokens: same brand colors, roles swap per theme */
+  --color-surface: var(--color-trilot-paper);
+  --color-surface-inverse: var(--color-trilot-navy);
+  --color-on-surface: var(--color-trilot-ink);
+  --color-on-surface-muted: color-mix(in oklab, var(--color-trilot-ink) 60%, transparent);
+}
+
+/* Dark mode overrides the semantic roles only — brand colors (navy/blue/coral/sky)
+   stay fixed so accents read the same in both themes. */
+.dark {
+  --color-surface: var(--color-trilot-ink);
+  --color-surface-inverse: var(--color-trilot-paper);
+  --color-on-surface: var(--color-trilot-paper);
+  --color-on-surface-muted: color-mix(in oklab, var(--color-trilot-paper) 65%, transparent);
+}
+
+
+/* Base styles */
+
+@layer base {
+  :root {
+    font-family: var(--font-body);
+    color: var(--color-on-surface);
+    background: var(--color-surface);
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    background: var(--color-surface);
+    transition: background-color 0.4s var(--ease-trilot);
+  }
+
+  body {
+    min-width: 320px;
+    min-height: 100vh;
+    margin: 0;
+    background: var(--color-surface);
+  }
+
+  body,
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  button,
+  a {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  img,
+  svg,
+  video {
+    display: block;
+    max-width: 100%;
+  }
+
+  img {
+    height: auto;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  p {
+    margin: 0;
+  }
+
+  ::selection {
+    color: var(--color-trilot-paper);
+    background: var(--color-trilot-blue);
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-trilot-coral);
+    outline-offset: 4px;
+  }
+}
+
+/* Reusable custom utilities */
+
+@utility container-trilot {
+  width: min(calc(100% - 2.5rem), 90rem);
+  margin-inline: auto;
+}
+
+@utility section-space {
+  padding-block: clamp(5rem, 12vw, 11rem);
+}
+
+@utility eyebrow {
+  color: var(--color-trilot-blue);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@utility line-mask {
+  display: block;
+  overflow: hidden;
+}
+
+/* Reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}

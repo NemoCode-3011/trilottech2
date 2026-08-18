@@ -1,0 +1,81 @@
+/* ---- Liquid glass nav tokens ---- */
+
+:root {
+  --nav-glass-fill: rgba(246, 242, 234, 0.55);
+  --nav-glass-fill-scrolled: rgba(246, 242, 234, 0.78);
+  --nav-glass-border: rgba(16, 42, 67, 0.12);
+  --nav-glass-shadow:
+    0 20px 40px -20px rgba(16, 42, 67, 0.28),
+    0 8px 16px -8px rgba(16, 42, 67, 0.16);
+  --nav-glass-highlight: rgba(255, 255, 255, 0.7);
+  --nav-glass-highlight-scrolled: rgba(255, 255, 255, 0.9);
+  --nav-text: var(--color-trilot-navy);
+  --nav-text-muted: rgba(16, 42, 67, 0.6);
+  --nav-hover-bg: rgba(16, 42, 67, 0.06);
+  --nav-underline: var(--color-trilot-blue);
+}
+
+.dark {
+  --nav-glass-fill: rgba(17, 24, 32, 0.55);
+  --nav-glass-fill-scrolled: rgba(17, 24, 32, 0.8);
+  --nav-glass-border: rgba(246, 242, 234, 0.14);
+  --nav-glass-shadow:
+    0 20px 40px -20px rgba(0, 0, 0, 0.55),
+    0 8px 16px -8px rgba(0, 0, 0, 0.4);
+  --nav-glass-highlight: rgba(191, 221, 245, 0.28);
+  --nav-glass-highlight-scrolled: rgba(191, 221, 245, 0.4);
+  --nav-text: var(--color-trilot-paper);
+  --nav-text-muted: rgba(246, 242, 234, 0.62);
+  --nav-hover-bg: rgba(246, 242, 234, 0.08);
+  --nav-underline: var(--color-trilot-sky);
+}
+
+/* Base glass surface. Any element (pill or fullscreen panel) can use this. */
+.nav-glass {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--nav-glass-fill);
+  border: 1px solid var(--nav-glass-border);
+  box-shadow: var(--nav-glass-shadow);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  transition:
+    background-color 0.4s var(--ease-trilot),
+    box-shadow 0.4s var(--ease-trilot),
+    backdrop-filter 0.4s var(--ease-trilot),
+    padding 0.4s var(--ease-trilot);
+}
+
+/* The "light shining from the top" highlight — a soft glow anchored top-left,
+   clipped to the glass shape by the parent's overflow:hidden. Denser/brighter
+   once scrolled, echoing the glass "thickening". */
+.nav-glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    120% 60% at 22% -15%,
+    var(--nav-glass-highlight),
+    transparent 60%
+  );
+  opacity: 0.85;
+  pointer-events: none;
+  transition:
+    opacity 0.4s var(--ease-trilot),
+    background 0.4s var(--ease-trilot);
+}
+
+.nav-glass--scrolled {
+  background-color: var(--nav-glass-fill-scrolled);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+}
+
+.nav-glass--scrolled::before {
+  background: radial-gradient(
+    120% 70% at 22% -15%,
+    var(--nav-glass-highlight-scrolled),
+    transparent 55%
+  );
+  opacity: 1;
+}

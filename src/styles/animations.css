@@ -1,0 +1,31 @@
+/* Infinite horizontal loop for the hero marquee ribbon.
+   Content is duplicated in the markup; translating by -50% loops seamlessly. */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 26s linear infinite;
+}
+
+/* Scroll-cue dot bouncing inside its track */
+@keyframes scroll-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translateY(10px);
+    opacity: 1;
+  }
+}
+
+.animate-scroll-bounce {
+  animation: scroll-bounce 1.8s var(--ease-trilot) infinite;
+}
