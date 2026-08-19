@@ -40,7 +40,7 @@ function Navbar() {
             className="flex shrink-0 items-center gap-2.5"
             aria-label="Trilot home"
           >
-            <img src="/logo2.png" alt="" className="h-6 w-auto" />
+            <img src="/assets/logo2.png" alt="" className="h-6 w-auto" />
             <span
               className="font-display text-base font-semibold tracking-[-0.02em]"
               style={{ color: "var(--nav-text)" }}
@@ -100,16 +100,22 @@ function Navbar() {
 
         {/* Mobile trigger bar */}
         <div
-          className={`nav-glass ${scrolled ? "nav-glass--scrolled" : ""} flex w-full items-center justify-between rounded-full md:hidden ${
-            scrolled ? "px-4 py-2" : "px-5 py-2.5"
+          className={`nav-glass ${scrolled || mobileOpen ? "nav-glass--scrolled" : ""} flex w-full items-center justify-between rounded-full border border-white/10 md:hidden ${
+            scrolled || mobileOpen ? "px-4 py-2" : "px-5 py-2.5"
           }`}
+          style={
+            mobileOpen
+              ? {
+                  background: "rgba(17, 24, 39, 0.45)",
+                  backdropFilter: "blur(18px)",
+                  WebkitBackdropFilter: "blur(18px)",
+                  boxShadow: "0 18px 40px rgba(15, 23, 42, 0.18)",
+                }
+              : undefined
+          }
         >
-          
-           <a href="#home"
-            className="flex shrink-0 items-center"
-            aria-label="Trilot home"
-          >
-            <img src="/logo2.png" alt="" className="h-6 w-auto" />
+          <a href="#home" className="flex shrink-0 items-center" aria-label="Trilot home">
+            <img src="/assets/logo2.png" alt="" className="h-6 w-auto" />
           </a>
 
           <div className="flex items-center gap-1">

@@ -31,7 +31,7 @@ export function Button({
     variant === "primary"
       ? "bg-trilot-blue text-trilot-paper hover:bg-trilot-navy"
       : variant === "coral"
-        ? "bg-trilot-coral text-trilot-paper hover:bg-trilot-navy"
+        ? "bg-trilot-coral-strong text-trilot-paper hover:bg-trilot-navy"
         : "border border-trilot-navy/20 bg-transparent text-trilot-navy hover:bg-trilot-navy hover:text-trilot-paper dark:border-trilot-paper/25 dark:text-trilot-paper dark:hover:bg-trilot-paper dark:hover:text-trilot-navy";
 
   return (

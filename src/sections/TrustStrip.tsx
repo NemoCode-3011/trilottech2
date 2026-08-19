@@ -37,7 +37,7 @@ export default function TrustStrip() {
   return (
     <section
       aria-labelledby="trust-strip-heading"
-    className="relative z-20 mt-0 bg-trilot-paper py-10 sm:py-12"
+    className="relative z-20 mt-0 bg-(--color-surface) py-10 sm:py-12"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onFocusCapture={() => setIsPaused(true)}
@@ -54,10 +54,10 @@ export default function TrustStrip() {
       />
 
       <Container className="relative">
-        <div className="overflow-hidden rounded-4xl border border-trilot-navy/15 bg-trilot-navy p-6 text-trilot-paper shadow-[0_24px_80px_rgba(16,42,67,0.18)] sm:rounded-[2.5rem] sm:p-8 lg:p-10">
-          <div className="flex flex-col gap-4 border-b border-trilot-paper/15 pb-6 sm:flex-row sm:items-end sm:justify-between">
+        <div className="overflow-hidden rounded-4xl border border-(--color-surface-inverse)/15 bg-(--color-surface-inverse) p-6 text-(--color-surface) shadow-[0_24px_80px_rgba(16,42,67,0.18)] sm:rounded-[2.5rem] sm:p-8 lg:p-10">
+          <div className="flex flex-col gap-4 border-b border-(--color-surface)/15 pb-6 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="font-mono text-[0.62rem] tracking-[0.14em] text-trilot-coral">
+              <p className="font-mono text-[0.62rem] tracking-[0.14em] text-(--color-accent-on-inverse)">
                 THE TRILOT APPROACH
               </p>
 
@@ -69,7 +69,7 @@ export default function TrustStrip() {
               </h2>
             </div>
 
-            <span className="font-mono text-[0.6rem] tracking-[0.12em] text-trilot-paper/45">
+            <span className="font-mono text-[0.6rem] tracking-[0.12em] text-(--color-surface)/45">
               {String(activeIndex + 1).padStart(2, "0")} /{" "}
               {String(trustPoints.length).padStart(2, "0")}
             </span>
@@ -77,7 +77,7 @@ export default function TrustStrip() {
 
           <div className="grid lg:grid-cols-[0.9fr_1.1fr]">
             <div
-              className="border-b border-trilot-paper/15 lg:border-b-0 lg:border-r lg:pr-8"
+              className="border-b border-(--color-surface)/15 lg:border-b-0 lg:border-r lg:pr-8"
               role="tablist"
               aria-label="Trilot approach principles"
             >
@@ -94,18 +94,18 @@ export default function TrustStrip() {
                     id={`trust-tab-${point.number}`}
                     onClick={() => handleSelect(index)}
                     className={[
-                      "group relative flex w-full items-center gap-4 border-b border-trilot-paper/10 py-5 text-left transition-colors last:border-b-0 focus-visible:z-10 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-trilot-coral",
+                      "group relative flex w-full items-center gap-4 border-b border-(--color-surface)/10 py-5 text-left transition-colors last:border-b-0 focus-visible:z-10 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-trilot-coral",
                       isActive
-                        ? "text-trilot-paper"
-                        : "text-trilot-paper/45 hover:text-trilot-paper/80",
+                        ? "text-(--color-surface)"
+                        : "text-(--color-surface)/45 hover:text-(--color-surface)/80",
                     ].join(" ")}
                   >
                     <span
                       className={[
                         "font-mono text-[0.62rem] tracking-widest transition-colors",
                         isActive
-                          ? "text-trilot-coral"
-                          : "text-trilot-paper/35",
+                          ? "text-(--color-accent-on-inverse)"
+                          : "text-(--color-surface)/35",
                       ].join(" ")}
                     >
                       {point.number}
@@ -120,7 +120,7 @@ export default function TrustStrip() {
                       className={[
                         "ml-auto text-xl transition-transform duration-300",
                         isActive
-                          ? "translate-x-0 text-trilot-coral"
+                          ? "translate-x-0 text-(--color-accent-on-inverse)"
                           : "group-hover:translate-x-1",
                       ].join(" ")}
                     >
@@ -136,7 +136,7 @@ export default function TrustStrip() {
                     >
                       {isActive && !reduceMotion ? (
                         <motion.span
-                          className="absolute inset-y-0 left-0 bg-trilot-paper/70"
+                          className="absolute inset-y-0 left-0 bg-(--color-surface)/70"
                           initial={{ width: "0%" }}
                           animate={{ width: "100%" }}
                           transition={{
@@ -179,11 +179,11 @@ export default function TrustStrip() {
                     PRINCIPLE {activePoint.number}
                   </span>
 
-                  <p className="mt-5 font-display text-3xl font-semibold leading-[0.95] tracking-[-0.06em] text-trilot-paper sm:text-4xl lg:text-5xl">
+                  <p className="mt-5 font-display text-3xl font-semibold leading-[0.95] tracking-[-0.06em] text-(--color-surface) sm:text-4xl lg:text-5xl">
                     {activePoint.shortDescription}
                   </p>
 
-                  <p className="mt-6 max-w-lg text-sm leading-relaxed text-trilot-paper/60 sm:text-base">
+                  <p className="mt-6 max-w-lg text-sm leading-relaxed text-(--color-surface)/60 sm:text-base">
                     {activePoint.description}
                   </p>
                 </motion.div>

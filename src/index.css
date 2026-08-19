@@ -14,6 +14,12 @@
   --color-trilot-paper: #f6f2ea;
   --color-trilot-ink: #111820;
   --color-trilot-coral: #d86b4c;
+  /* Darker coral for surfaces that carry text (e.g. solid buttons) — the base
+     coral above is ~3:1 against paper text, which fails WCAG AA (4.5:1).
+     This shade clears 4.5:1 while keeping the same hue. Use the base coral
+     for decorative accents (underlines, dots, borders) where contrast rules
+     don't apply. */
+  --color-trilot-coral-strong: #bd4a29;
 
   --font-display: "Space Grotesk", sans-serif;
   --font-body: "Manrope", sans-serif;
@@ -26,6 +32,15 @@
   --color-surface-inverse: var(--color-trilot-navy);
   --color-on-surface: var(--color-trilot-ink);
   --color-on-surface-muted: color-mix(in oklab, var(--color-trilot-ink) 60%, transparent);
+
+  /* Coral text needs different lightness depending on what's behind it.
+     --color-accent: coral text sitting on --color-surface.
+     --color-accent-on-inverse: coral text sitting on --color-surface-inverse.
+     Each flips to the other's value in dark mode, since surface/surface-inverse
+     swap too — this keeps coral text at ~4.5:1+ contrast in every combination. */
+  --color-trilot-coral-bright: #da7558;
+  --color-accent: var(--color-trilot-coral-strong);
+  --color-accent-on-inverse: var(--color-trilot-coral-bright);
 }
 
 /* Dark mode overrides the semantic roles only — brand colors (navy/blue/coral/sky)
@@ -35,6 +50,8 @@
   --color-surface-inverse: var(--color-trilot-paper);
   --color-on-surface: var(--color-trilot-paper);
   --color-on-surface-muted: color-mix(in oklab, var(--color-trilot-paper) 65%, transparent);
+  --color-accent: var(--color-trilot-coral-bright);
+  --color-accent-on-inverse: var(--color-trilot-coral-strong);
 }
 
 
@@ -161,5 +178,11 @@
 html,
 body {
   max-width: 100%;
-  overflow-x: hidden;
+  /* overflow-x: clip, not hidden. "hidden" forces the browser to compute
+     overflow-y as "auto" on this element (since only one axis is
+     non-visible), which turns body into its own scroll container and
+     breaks position: sticky for every descendant — including the
+     scroll-jacked Process section. "clip" prevents the same horizontal
+     bleed without triggering that quirk. */
+  overflow-x: clip;
 }

@@ -76,7 +76,7 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
         }}
       >
         <motion.img
-          src="/logo2.png"
+          src="/assets/logo2.png"
           alt="Trilot"
           className="w-24 mix-blend-multiply sm:w-32"
           initial={{ opacity: 0, scale: 0.8 }}

@@ -25,7 +25,7 @@ export const heroPaths = [
     highlightedHeadline: "the quality of your business.",
     body: "For growing businesses with an outdated  online presence. We create digital experiences that earn trust and create better enquiries.",
     cta: "Improve my website",
-    image: "/business300.jpg",
+    image: "/assets/business300.jpg",
     imagePosition: "center center",
     overlay:
       "linear-gradient(90deg, rgba(16, 42, 67, 0.98) 0%, rgba(16, 42, 67, 0.9) 38%, rgba(16, 42, 67, 0.5) 72%, rgba(16, 42, 67, 0.2) 100%)",
@@ -40,7 +40,7 @@ export const heroPaths = [
     highlightedHeadline: "something people can use.",
     body: "For founders who need help shaping, designing, and building a useful first version of their digital product.",
     cta: "Discuss my idea",
-    image: "/product1.jpg",
+    image: "/assets/product1.jpg",
     imagePosition: "center center",
     overlay:
       "linear-gradient(90deg, rgba(16, 42, 67, 0.98) 0%, rgba(16, 42, 67, 0.88) 38%, rgba(23, 105, 209, 0.55) 72%, rgba(16, 42, 67, 0.22) 100%)",
@@ -55,7 +55,7 @@ export const heroPaths = [
     highlightedHeadline: "and easier to choose.",
     body: "For businesses with valuable expertise but a website that is not communicating their value clearly enough.",
     cta: "Build a clearer presence",
-    image: "/db700.png",
+    image: "/assets/db700.webp",
     imagePosition: "center center",
     overlay:
       "linear-gradient(10deg, rgba(246, 242, 234, 0.65) 0%, rgba(246, 242, 234, 0.55) 45%, rgba(246, 242, 234, 0.4) 100%)",

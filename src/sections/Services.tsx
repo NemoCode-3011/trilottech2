@@ -34,7 +34,7 @@ function ServiceRow({
         duration: reduceMotion ? 0 : 0.55,
         ease: easeOut,
       }}
-      className="border-b border-trilot-navy/15"
+      className="border-b border-(--color-on-surface)/15"
     >
       <button
         type="button"
@@ -45,7 +45,7 @@ function ServiceRow({
         <span
           className={[
             "pt-1 font-mono text-[0.65rem] tracking-[0.12em] transition-colors",
-            isActive ? "text-trilot-coral" : "text-trilot-navy/40",
+            isActive ? "text-(--color-accent)" : "text-(--color-on-surface)/40",
           ].join(" ")}
         >
           {service.number}
@@ -56,8 +56,8 @@ function ServiceRow({
             className={[
               "block font-display text-4xl font-semibold leading-[0.9] tracking-[-0.07em] transition-transform duration-500 sm:text-6xl lg:text-7xl",
               isActive
-                ? "translate-x-0 text-trilot-navy"
-                : "text-trilot-navy/45 group-hover:translate-x-2 group-hover:text-trilot-navy/75",
+                ? "translate-x-0 text-(--color-on-surface)"
+                : "text-(--color-on-surface)/45 group-hover:translate-x-2 group-hover:text-(--color-on-surface)/75",
             ].join(" ")}
           >
             {service.title}
@@ -81,7 +81,7 @@ function ServiceRow({
             "mt-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border text-xl leading-none transition-all duration-500",
             isActive
               ? "rotate-45 border-trilot-coral bg-trilot-coral text-trilot-navy"
-              : "border-trilot-navy/20 text-trilot-navy/45 group-hover:border-trilot-navy/60",
+              : "border-(--color-on-surface)/20 text-(--color-on-surface)/45 group-hover:border-(--color-on-surface)/60",
           ].join(" ")}
         >
           +
@@ -99,14 +99,14 @@ function ServiceRow({
         <div className="min-h-0 overflow-hidden">
           <div className="pb-8 pl-12 sm:pb-10 sm:pl-20">
             <div className="grid gap-7 sm:grid-cols-[1fr_auto] sm:items-end">
-              <p className="max-w-lg text-sm leading-relaxed text-trilot-navy/60 sm:text-base">
+              <p className="max-w-lg text-sm leading-relaxed text-(--color-on-surface)/60 sm:text-base">
                 {service.description}
               </p>
 
               <a
                 href={service.href}
                 onClick={(event) => event.stopPropagation()}
-                className="inline-flex items-center gap-2 self-start border-b border-trilot-navy/40 pb-1 text-sm font-medium transition-colors hover:border-trilot-coral hover:text-trilot-coral focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-trilot-coral sm:self-end"
+                className="inline-flex items-center gap-2 self-start border-b border-(--color-on-surface)/40 pb-1 text-sm font-medium transition-colors hover:border-trilot-coral hover:text-trilot-coral focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-trilot-coral sm:self-end"
               >
                 Explore service
                 <span aria-hidden="true">↗</span>
@@ -117,7 +117,7 @@ function ServiceRow({
               {service.details.map((detail) => (
                 <span
                   key={detail}
-                  className="font-mono text-[0.6rem] uppercase tracking-widest text-trilot-navy/45"
+                  className="font-mono text-[0.6rem] uppercase tracking-widest text-(--color-on-surface)/45"
                 >
                   {detail}
                 </span>
@@ -151,7 +151,7 @@ export default function Services() {
     <section
       id="services"
       aria-labelledby="services-heading"
-      className="relative overflow-hidden bg-trilot-paper text-trilot-navy"
+      className="relative overflow-hidden bg-(--color-surface) text-(--color-on-surface)"
     >
       <div
         aria-hidden="true"
@@ -162,7 +162,7 @@ export default function Services() {
         <div className="grid gap-16 lg:grid-cols-[0.72fr_1.28fr] lg:gap-24">
           <div className="lg:sticky lg:top-32 lg:flex lg:h-fit lg:flex-col lg:justify-between">
             <div>
-              <p className="font-mono text-[0.65rem] tracking-[0.14em] text-trilot-coral">
+              <p className="font-mono text-[0.65rem] tracking-[0.14em] text-(--color-accent)">
                 WHAT WE DO
               </p>
 
@@ -173,7 +173,7 @@ export default function Services() {
                 Digital work that moves things forward.
               </h2>
 
-              <p className="mt-8 max-w-sm text-base leading-relaxed text-trilot-navy/60 sm:text-lg">
+              <p className="mt-8 max-w-sm text-base leading-relaxed text-(--color-on-surface)/60 sm:text-lg">
                 Websites, applications, and support for businesses ready to
                 make their next move.
               </p>
@@ -185,7 +185,7 @@ export default function Services() {
                 className="h-px w-16 bg-trilot-coral"
               />
 
-              <span className="font-mono text-[0.6rem] uppercase tracking-[0.12em] text-trilot-navy/45">
+              <span className="font-mono text-[0.6rem] uppercase tracking-[0.12em] text-(--color-on-surface)/45">
                 Choose a direction
               </span>
             </div>

@@ -90,7 +90,7 @@ export function MobileMenu({ links, onClose,triggerRef, }: MobileMenuProps) {
           className="flex items-center gap-2"
           aria-label="Trilot home"
         >
-          <img src="/logo2.png" alt="" className="h-6 w-auto" />
+          <img src="/assets/logo2.png" alt="" className="h-6 w-auto" />
         </a>
 
         <div className="flex items-center gap-1">
