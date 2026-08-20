@@ -34,13 +34,13 @@ function ServiceRow({
         duration: reduceMotion ? 0 : 0.55,
         ease: easeOut,
       }}
-      className="border-b border-(--color-on-surface)/15"
+      className="min-w-0 border-b border-(--color-on-surface)/15"
     >
       <button
         type="button"
         onClick={onSelect}
         aria-expanded={isActive}
-        className="group flex w-full items-start gap-5 py-7 text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-trilot-coral sm:gap-8 sm:py-9"
+        className="group flex min-w-0 w-full items-start gap-2 py-6 text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-trilot-coral sm:gap-5 sm:py-8 lg:gap-6"
       >
         <span
           className={[
@@ -54,7 +54,7 @@ function ServiceRow({
         <span className="min-w-0 flex-1">
           <span
             className={[
-              "block font-display text-4xl font-semibold leading-[0.9] tracking-[-0.07em] transition-transform duration-500 sm:text-6xl lg:text-7xl",
+              "block wrap-break-word font-display text-[clamp(1.75rem,7vw,3.25rem)] font-semibold leading-[0.9] tracking-[-0.07em] transition-transform duration-500 sm:text-5xl lg:text-6xl",
               isActive
                 ? "translate-x-0 text-(--color-on-surface)"
                 : "text-(--color-on-surface)/45 group-hover:translate-x-2 group-hover:text-(--color-on-surface)/75",
@@ -78,7 +78,7 @@ function ServiceRow({
         <span
           aria-hidden="true"
           className={[
-            "mt-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border text-xl leading-none transition-all duration-500",
+            "mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border text-base leading-none transition-all duration-500 sm:h-8 sm:w-8 sm:text-lg",
             isActive
               ? "rotate-45 border-trilot-coral bg-trilot-coral text-trilot-navy"
               : "border-(--color-on-surface)/20 text-(--color-on-surface)/45 group-hover:border-(--color-on-surface)/60",
@@ -97,7 +97,7 @@ function ServiceRow({
         ].join(" ")}
       >
         <div className="min-h-0 overflow-hidden">
-          <div className="pb-8 pl-12 sm:pb-10 sm:pl-20">
+          <div className="pb-7 pl-9 sm:pb-9 sm:pl-16 lg:pl-14">
             <div className="grid gap-7 sm:grid-cols-[1fr_auto] sm:items-end">
               <p className="max-w-lg text-sm leading-relaxed text-(--color-on-surface)/60 sm:text-base">
                 {service.description}
@@ -145,22 +145,22 @@ function ServiceRow({
 
 export default function Services() {
   const reduceMotion = useReducedMotion();
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState<number | null>(0);
 
   return (
     <section
       id="services"
       aria-labelledby="services-heading"
-      className="relative overflow-hidden bg-(--color-surface) text-(--color-on-surface)"
+      className="relative w-full min-w-0 overflow-x-hidden bg-(--color-surface) text-(--color-on-surface)"
     >
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -right-32 top-1/4 h-96 w-96 rounded-full bg-trilot-blue/15 blur-3xl"
       />
 
-      <Container className="relative py-24 sm:py-32 lg:py-40">
-        <div className="grid gap-16 lg:grid-cols-[0.72fr_1.28fr] lg:gap-24">
-          <div className="lg:sticky lg:top-32 lg:flex lg:h-fit lg:flex-col lg:justify-between">
+      <Container className="relative py-20 sm:py-28 lg:py-32">
+        <div className="grid min-w-0 gap-12 xl:grid-cols-[0.8fr_1.2fr] xl:gap-20">
+          <div className="xl:sticky xl:top-32 xl:flex xl:h-fit xl:flex-col xl:justify-between">
             <div>
               <p className="font-mono text-[0.65rem] tracking-[0.14em] text-(--color-accent)">
                 WHAT WE DO
@@ -168,22 +168,19 @@ export default function Services() {
 
               <h2
                 id="services-heading"
-                className="mt-6 max-w-[8ch] font-display text-6xl font-semibold leading-[0.86] tracking-[-0.08em] sm:text-7xl lg:text-8xl"
+                className="mt-5 max-w-[9ch] wrap-break-word font-display text-[clamp(2.75rem,11vw,4.25rem)] font-semibold leading-[0.86] tracking-[-0.08em] sm:text-6xl xl:text-7xl"
               >
                 Digital work that moves things forward.
               </h2>
 
-              <p className="mt-8 max-w-sm text-base leading-relaxed text-(--color-on-surface)/60 sm:text-lg">
-                Websites, applications, and support for businesses ready to
-                make their next move.
+              <p className="mt-6 max-w-sm text-base leading-relaxed text-(--color-on-surface)/60 sm:text-lg">
+                Websites, applications, and support for businesses ready to make
+                their next move.
               </p>
             </div>
 
-            <div className="mt-12 hidden items-center gap-4 lg:flex">
-              <span
-                aria-hidden="true"
-                className="h-px w-16 bg-trilot-coral"
-              />
+            <div className="mt-12 hidden items-center gap-4 xl:flex">
+              <span aria-hidden="true" className="h-px w-16 bg-trilot-coral" />
 
               <span className="font-mono text-[0.6rem] uppercase tracking-[0.12em] text-(--color-on-surface)/45">
                 Choose a direction
@@ -191,14 +188,18 @@ export default function Services() {
             </div>
           </div>
 
-          <div>
+          <div className="min-w-0">
             {services.map((service, index) => (
               <ServiceRow
                 key={service.number}
                 service={service}
                 index={index}
                 isActive={activeIndex === index}
-                onSelect={() => setActiveIndex(index)}
+                onSelect={() =>
+                  setActiveIndex((currentIndex) =>
+                    currentIndex === index ? null : index,
+                  )
+                }
                 reduceMotion={reduceMotion}
               />
             ))}

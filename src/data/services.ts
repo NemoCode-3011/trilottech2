@@ -6,7 +6,7 @@ export const services = [
     description:
       "Distinctive, useful websites for businesses that need to be understood quickly and remembered clearly.",
     details: ["Strategy", "UX", "Visual design", "Development"],
-    href: "/services/websites",
+    href: "/#services",
     accent: "coral",
   },
   {
@@ -15,8 +15,13 @@ export const services = [
     headline: "Make complex work feel simple.",
     description:
       "Purpose-built digital tools for the workflows, systems, and customer experiences behind the business.",
-    details: ["Product thinking", "Interface design", "Development", "Iteration"],
-    href: "/services/web-applications",
+    details: [
+      "Product thinking",
+      "Interface design",
+      "Development",
+      "Iteration",
+    ],
+    href: "/#services",
     accent: "blue",
   },
   {
@@ -26,7 +31,7 @@ export const services = [
     description:
       "Ongoing improvements, maintenance, and practical guidance for digital products after launch.",
     details: ["Maintenance", "Improvements", "New features", "Guidance"],
-    href: "/services/support",
+    href: "/#services",
     accent: "coral",
   },
 ] as const;

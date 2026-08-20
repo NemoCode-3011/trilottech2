@@ -9,11 +9,11 @@ import { useScrollProgress } from "../hooks/useScrollProgress";
 const easeOut = [0.22, 1, 0.36, 1] as const;
 
 const NAV_LINKS: NavLink[] = [
-  { label: "Home", href: "#home" },
-  { label: "About", href: "#about" },
-  { label: "Portfolio", href: "#work" },
-  { label: "Services", href: "#services" },
-  { label: "Contact", href: "#contact" },
+  { label: "Home", href: "/#home" },
+  { label: "How we work", href: "/#process" },
+  { label: "Portfolio", href: "/#work" },
+  { label: "Services", href: "/#services" },
+  { label: "Contact", href: "/#contact" },
 ];
 
 function Navbar() {
@@ -35,8 +35,8 @@ function Navbar() {
             scrolled ? "px-5 py-2" : "px-6 py-3.5"
           }`}
         >
-          
-            <a href="#home"
+          <a
+            href="/#home"
             className="flex shrink-0 items-center gap-2.5"
             aria-label="Trilot home"
           >
@@ -54,8 +54,8 @@ function Navbar() {
             onMouseLeave={() => setHovered(NAV_LINKS[0].href)}
           >
             {NAV_LINKS.map((link) => (
-              
-                <a key={link.href}
+              <a
+                key={link.href}
                 href={link.href}
                 onMouseEnter={() => setHovered(link.href)}
                 className="relative px-4 py-2 text-sm font-semibold transition-colors duration-200"
@@ -92,7 +92,10 @@ function Navbar() {
 
           <div className="flex shrink-0 items-center gap-2">
             <ThemeToggle />
-            <Button href="#contact" className="min-h-9! px-4! py-2! text-xs!">
+            <Button
+              href="/start-project"
+              className="min-h-9! px-4! py-2! text-xs!"
+            >
               Start a project
             </Button>
           </div>
@@ -114,7 +117,11 @@ function Navbar() {
               : undefined
           }
         >
-          <a href="#home" className="flex shrink-0 items-center" aria-label="Trilot home">
+          <a
+            href="/#home"
+            className="flex shrink-0 items-center"
+            aria-label="Trilot home"
+          >
             <img src="/assets/logo2.png" alt="" className="h-6 w-auto" />
           </a>
 

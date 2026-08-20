@@ -21,7 +21,7 @@ type MobileMenuProps = {
 const FOCUSABLE_SELECTOR =
   'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
-export function MobileMenu({ links, onClose,triggerRef, }: MobileMenuProps) {
+export function MobileMenu({ links, onClose, triggerRef }: MobileMenuProps) {
   const panelRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
@@ -85,7 +85,7 @@ export function MobileMenu({ links, onClose,triggerRef, }: MobileMenuProps) {
     >
       <div className="flex shrink-0 items-center justify-between px-6 pt-[max(1.25rem,env(safe-area-inset-top))]">
         <a
-          href="#home"
+          href="/#home"
           onClick={onClose}
           className="flex items-center gap-2"
           aria-label="Trilot home"
@@ -108,7 +108,7 @@ export function MobileMenu({ links, onClose,triggerRef, }: MobileMenuProps) {
         </div>
       </div>
 
-     <nav className="flex min-h-0 flex-1 flex-col justify-center gap-1 overflow-y-auto px-8 py-8">
+      <nav className="flex min-h-0 flex-1 flex-col justify-center gap-1 overflow-y-auto px-8 py-8">
         {links.map((link, index) => (
           <motion.a
             key={link.href}
@@ -144,7 +144,7 @@ export function MobileMenu({ links, onClose,triggerRef, }: MobileMenuProps) {
         }}
         className="shrink-0 px-8 pb-[max(2.5rem,env(safe-area-inset-bottom))] pt-6"
       >
-        <Button href="#contact" onClick={onClose} className="w-full">
+        <Button href="/start-project" onClick={onClose} className="w-full">
           Start a project
         </Button>
       </motion.div>

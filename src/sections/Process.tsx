@@ -1,337 +1,153 @@
-import {
-  AnimatePresence,
-  motion,
-  useMotionValueEvent,
-  useReducedMotion,
-  useScroll,
-  useTransform,
-} from "motion/react";
-import { useRef, useState } from "react";
+import { motion, useReducedMotion } from "motion/react";
 import { Container } from "../components/Container";
 import { processSteps } from "../data/process";
 import { easeOut } from "../lib/motion";
-import {
-  BriefArtifact,
-  BuildArtifact,
-  LaunchArtifact,
-  ShapeArtifact,
-} from "../sections/Process-Artifacts"
-
-const artifacts = [
-  BriefArtifact,
-  ShapeArtifact,
-  BuildArtifact,
-  LaunchArtifact,
-];
-
-function ProcessArtifact({ index }: { index: number }) {
-  const Artifact = artifacts[index];
-  return <Artifact />;
-}
-
-function ProcessNav({
-  activeIndex,
-  overallProgress,
-  onSelect,
-}: {
-  activeIndex: number;
-  overallProgress: number;
-  onSelect: (index: number) => void;
-}) {
-  return (
-    <div className="relative mt-8 pl-6">
-      {/* Continuous rail: one line for the whole journey, not 4 separate
-          per-step bars. Fills top to bottom as the visitor scrolls through
-          all 4 stages. */}
-      <span
-        aria-hidden="true"
-        className="absolute left-0 top-0 h-full w-px bg-(--color-on-surface)/10"
-      />
-      <span
-        aria-hidden="true"
-        className="absolute left-0 top-0 w-px bg-trilot-coral"
-        style={{
-          height: `${Math.min(100, Math.max(0, overallProgress * 100))}%`,
-        }}
-      />
-
-      <div
-        className="border-t border-(--color-on-surface)/15"
-        role="tablist"
-        aria-label="Process stages"
-      >
-        {processSteps.map((step, index) => {
-          const active = activeIndex === index;
-
-          return (
-            <button
-              key={step.number}
-              type="button"
-              role="tab"
-              aria-selected={active}
-              aria-controls={`process-panel-${step.number}`}
-              onClick={() => onSelect(index)}
-              className={[
-                "group flex w-full items-center gap-4 border-b border-(--color-on-surface)/15 py-3 text-left transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-trilot-coral",
-                active
-                  ? "text-(--color-on-surface)"
-                  : "text-(--color-on-surface)/40 hover:text-(--color-on-surface)/75",
-              ].join(" ")}
-            >
-              <span
-                className={[
-                  "font-mono text-[0.62rem] tracking-widest",
-                  active ? "text-(--color-accent)" : "text-(--color-on-surface)/35",
-                ].join(" ")}
-              >
-                {step.number}
-              </span>
-
-              <span className="font-display text-xl font-semibold tracking-tighter">
-                {step.title}
-              </span>
-
-              <span
-                aria-hidden="true"
-                className={[
-                  "ml-auto text-lg transition-transform duration-300",
-                  active
-                    ? "translate-x-1 text-trilot-coral"
-                    : "group-hover:translate-x-1",
-                ].join(" ")}
-              >
-                ↗
-              </span>
-            </button>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
-function MobileProcess() {
-  const reduceMotion = useReducedMotion();
-
-  return (
-    <div className="space-y-16 lg:hidden">
-      {processSteps.map((step, index) => (
-        <article key={step.number}>
-          <div className="flex items-baseline gap-4 border-b border-(--color-on-surface)/15 pb-4">
-            <span className="font-mono text-[0.62rem] tracking-widest text-(--color-accent)">
-              {step.number}
-            </span>
-
-            <h3 className="font-display text-4xl font-semibold leading-none tracking-[-0.07em]">
-              {step.title}
-            </h3>
-          </div>
-
-          <p className="mt-5 max-w-lg text-base leading-relaxed text-(--color-on-surface)/60">
-            {step.description}
-          </p>
-
-          <p className="relative mt-4 inline-block font-mono text-[0.58rem] uppercase tracking-widest text-(--color-on-surface)/45">
-            {step.note}
-            <span
-              aria-hidden="true"
-              className="absolute -bottom-2 left-0 h-px w-[78%] -rotate-1 bg-trilot-coral"
-            />
-          </p>
-
-          <motion.div
-            initial={reduceMotion ? false : { opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{
-              delay: reduceMotion ? 0 : index * 0.05,
-              duration: reduceMotion ? 0 : 0.45,
-              ease: easeOut,
-            }}
-            className="mt-8"
-          >
-            <ProcessArtifact index={index} />
-          </motion.div>
-        </article>
-      ))}
-    </div>
-  );
-}
 
 export default function Process() {
-  const sectionRef = useRef<HTMLElement | null>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [stepProgress, setStepProgress] = useState(0);
-  const [direction, setDirection] = useState<1 | -1>(1);
-  const manualOverride = useRef<number | null>(null);
-  const lastIndexRef = useRef(0);
   const reduceMotion = useReducedMotion();
-
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start start", "end end"],
-  });
-
-  const scrollIndex = useTransform(
-    scrollYProgress,
-    [0, 1],
-    [0, processSteps.length],
-  );
-
-  const overallProgress = (activeIndex + stepProgress) / processSteps.length;
-
-  useMotionValueEvent(scrollIndex, "change", (latest) => {
-    if (reduceMotion) return;
-
-    const clamped = Math.min(processSteps.length - 0.001, Math.max(0, latest));
-    const index = Math.floor(clamped);
-    const fraction = clamped - index;
-
-    // A click just jumped the active step ahead of where the scroll math
-    // says it should be — let scroll catch back up before it takes over
-    // again, instead of snapping the tab back immediately.
-    if (manualOverride.current !== null) {
-      if (index === manualOverride.current) {
-        manualOverride.current = null;
-      } else {
-        return;
-      }
-    }
-
-    if (index !== lastIndexRef.current) {
-      setDirection(index > lastIndexRef.current ? 1 : -1);
-      lastIndexRef.current = index;
-    }
-
-    setActiveIndex(index);
-    setStepProgress(fraction);
-  });
-
-  function handleSelect(index: number) {
-    if (index !== activeIndex) {
-      setDirection(index > activeIndex ? 1 : -1);
-    }
-    lastIndexRef.current = index;
-    manualOverride.current = index;
-    setActiveIndex(index);
-    setStepProgress(0);
-
-    const section = sectionRef.current;
-    if (!section) return;
-
-    const rect = section.getBoundingClientRect();
-    const scrollableHeight = rect.height - window.innerHeight;
-    const targetFraction = (index + 0.15) / processSteps.length;
-    const targetY =
-      window.scrollY + rect.top + targetFraction * scrollableHeight;
-
-    window.scrollTo({
-      top: targetY,
-      behavior: reduceMotion ? "auto" : "smooth",
-    });
-  }
 
   return (
     <section
-      ref={sectionRef}
       id="process"
       aria-labelledby="process-heading"
-      className="relative bg-(--color-surface) text-(--color-on-surface)"
+      className="relative overflow-hidden bg-trilot-paper text-trilot-navy dark:bg-trilot-navy dark:text-trilot-paper"
     >
-      <div className="hidden lg:block">
-        <div className="relative h-[340vh]">
-          <div className="sticky top-0 flex min-h-screen items-center">
-            <Container className="py-16 lg:py-20">
-              <div className="grid items-center gap-16 lg:grid-cols-[0.82fr_1.18fr] lg:gap-24">
-                <div>
-                  <p className="font-mono text-[0.65rem] tracking-[0.14em] text-(--color-accent)">
-                    HOW WE WORK
-                  </p>
-
-                  <h2
-                    id="process-heading"
-                    className="mt-5 max-w-[8ch] font-display text-6xl font-semibold leading-[0.86] tracking-[-0.08em] lg:text-7xl"
-                  >
-                    Good work starts before the first pixel.
-                  </h2>
-
-                  <p className="mt-6 max-w-sm text-base leading-relaxed text-(--color-on-surface)/60 lg:text-lg">
-                    We make room to understand the problem, shape the
-                    direction, build the thing, and improve what comes next.
-                  </p>
-
-                  <ProcessNav
-                    activeIndex={activeIndex}
-                    overallProgress={overallProgress}
-                    onSelect={handleSelect}
-                  />
-                </div>
-
-                <div className="relative">
-                  <AnimatePresence mode="wait" initial={false} custom={direction}>
-                    <motion.div
-                      key={activeIndex}
-                      custom={direction}
-                      id={`process-panel-${processSteps[activeIndex].number}`}
-                      role="tabpanel"
-                      aria-labelledby={`process-step-${processSteps[activeIndex].number}`}
-                      initial={
-                        reduceMotion
-                          ? { opacity: 1 }
-                          : { opacity: 0, y: direction * 28 }
-                      }
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={
-                        reduceMotion
-                          ? { opacity: 1 }
-                          : { opacity: 0, y: direction * -20 }
-                      }
-                      transition={{
-                        duration: reduceMotion ? 0.1 : 0.42,
-                        ease: easeOut,
-                      }}
-                    >
-                      <ProcessArtifact index={activeIndex} />
-                    </motion.div>
-                  </AnimatePresence>
-
-                  <div className="mt-5 flex items-center justify-between font-mono text-[0.58rem] uppercase tracking-[0.12em] text-(--color-on-surface)/40">
-                    <span>
-                      {processSteps[activeIndex].number} /{" "}
-                      {String(processSteps.length).padStart(2, "0")}
-                    </span>
-
-                    <span>working notes</span>
-                  </div>
-                </div>
-              </div>
-            </Container>
-          </div>
-        </div>
-      </div>
-
-      <div className="lg:hidden">
-        <Container className="py-24 sm:py-32">
-          <div>
-            <p className="font-mono text-[0.65rem] tracking-[0.14em] text-(--color-accent)">
+      <Container className="py-24 sm:py-32 lg:py-40">
+        <div className="grid gap-16 xl:grid-cols-[0.68fr_1.32fr] xl:gap-24">
+          <div className="xl:sticky xl:top-32 xl:h-fit">
+            <p className="font-mono text-[0.65rem] tracking-[0.14em] text-trilot-coral">
               HOW WE WORK
             </p>
 
-            <h2 className="mt-6 max-w-[9ch] font-display text-6xl font-semibold leading-[0.86] tracking-[-0.08em] sm:text-7xl">
-              Good work starts before the first pixel.
+            <h2
+              id="process-heading"
+              className="mt-6 max-w-[8ch] font-display text-6xl font-semibold leading-[0.86] tracking-[-0.08em] sm:text-7xl xl:text-8xl"
+            >
+              From first idea to what comes next.
             </h2>
 
-            <p className="mt-8 max-w-lg text-base leading-relaxed text-(--color-on-surface)/60 sm:text-lg">
-              We make room to understand the problem, shape the direction,
-              build the thing, and improve what comes next.
+            <p className="mt-8 max-w-sm text-base leading-relaxed text-trilot-navy/60 dark:text-trilot-paper/60 sm:text-lg">
+              A straightforward process for turning unclear problems into useful
+              digital work.
             </p>
+
+            <div className="mt-12 hidden items-center gap-4 xl:flex">
+              <span aria-hidden="true" className="h-px w-12 bg-trilot-coral" />
+
+              <span className="font-mono text-[0.58rem] uppercase tracking-[0.12em] text-trilot-navy/40 dark:text-trilot-paper/40">
+                Four steps
+              </span>
+            </div>
           </div>
 
-          <div className="mt-16">
-            <MobileProcess />
+          <div className="relative">
+            <div
+              aria-hidden="true"
+              className="absolute bottom-8 left-3 top-8 hidden w-px bg-trilot-navy/15 dark:bg-trilot-paper/15 sm:block xl:left-1/2 xl:-translate-x-1/2"
+            />
+
+            <div className="space-y-16 sm:space-y-20 lg:space-y-24">
+              {processSteps.map((step, index) => {
+                const isLeft = index % 2 === 0;
+
+                return (
+                  <motion.article
+                    key={step.number}
+                    initial={
+                      reduceMotion
+                        ? false
+                        : {
+                            opacity: 0,
+                            y: 24,
+                          }
+                    }
+                    whileInView={{
+                      opacity: 1,
+                      y: 0,
+                    }}
+                    viewport={{
+                      once: true,
+                      margin: "-80px",
+                    }}
+                    transition={{
+                      delay: reduceMotion ? 0 : index * 0.06,
+                      duration: reduceMotion ? 0 : 0.6,
+                      ease: easeOut,
+                    }}
+                    className={[
+                      "group relative grid gap-6 sm:grid-cols-[4.5rem_1fr] sm:gap-8 xl:grid-cols-2 xl:gap-0",
+                      isLeft ? "" : "xl:text-right",
+                    ].join(" ")}
+                  >
+                    <div
+                      className={[
+                        "relative sm:col-span-2 xl:col-span-1",
+                        isLeft
+                          ? "xl:col-start-1 xl:pr-16"
+                          : "xl:col-start-2 xl:row-start-1 xl:pl-16",
+                      ].join(" ")}
+                    >
+                      <span
+                        aria-hidden="true"
+                        className={[
+                          "absolute top-2 hidden h-4 w-4 rounded-full border-4 border-trilot-paper bg-trilot-coral transition-transform duration-500 group-hover:scale-125 dark:border-trilot-navy sm:block xl:top-3",
+                          isLeft ? "xl:-right-2" : "xl:-left-2",
+                          isLeft ? "sm:left-[-2.1rem]" : "",
+                        ].join(" ")}
+                      />
+
+                      <span
+                        className={[
+                          "block font-display text-[clamp(6rem,14vw,11rem)] font-semibold leading-[0.64] tracking-[-0.11em] text-trilot-navy/12 transition-colors duration-500 group-hover:text-trilot-coral dark:text-trilot-paper/12 sm:text-[clamp(7rem,11vw,10rem)]",
+                          isLeft ? "" : "xl:text-right",
+                        ].join(" ")}
+                      >
+                        {step.number}
+                      </span>
+
+                      <div
+                        className={[
+                          "mt-8",
+                          isLeft ? "" : "xl:flex xl:flex-col xl:items-end",
+                        ].join(" ")}
+                      >
+                        <h3 className="max-w-[10ch] font-display text-4xl font-semibold leading-[0.88] tracking-[-0.07em] sm:text-5xl xl:text-6xl">
+                          {step.title}
+                        </h3>
+
+                        <p
+                          className={[
+                            "mt-5 max-w-md text-base leading-relaxed text-trilot-navy/60 dark:text-trilot-paper/60 sm:text-lg",
+                            isLeft ? "" : "xl:ml-auto",
+                          ].join(" ")}
+                        >
+                          {step.description}
+                        </p>
+
+                        <div
+                          className={[
+                            "mt-8 flex items-center gap-4",
+                            isLeft ? "" : "xl:flex-row-reverse",
+                          ].join(" ")}
+                        >
+                          <span
+                            aria-hidden="true"
+                            className="h-px w-10 bg-trilot-coral transition-all duration-500 group-hover:w-20"
+                          />
+
+                          <span className="font-mono text-[0.58rem] uppercase tracking-[0.12em] text-trilot-navy/40 dark:text-trilot-paper/40">
+                            Step {step.number}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.article>
+                );
+              })}
+            </div>
           </div>
-        </Container>
-      </div>
+        </div>
+      </Container>
     </section>
   );
 }
