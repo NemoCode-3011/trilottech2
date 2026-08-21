@@ -407,7 +407,7 @@ export default function StartProject() {
                   </div>
                 </fieldset>
 
-                <div className="flex flex-col items-stretch gap-4 bg-trilot-navy/[0.03] px-5 py-7 sm:flex-row sm:items-center sm:justify-between sm:px-8 sm:py-8 dark:bg-trilot-paper/[0.04]">
+                <div className="flex flex-col items-stretch gap-4 bg-trilot-navy/3 px-5 py-7 sm:flex-row sm:items-center sm:justify-between sm:px-8 sm:py-8 dark:bg-trilot-paper/4">
                   <button
                     type="submit"
                     disabled={submitState === "sending"}
