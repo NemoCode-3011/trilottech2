@@ -1,8 +1,9 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
+import emailjs from "@emailjs/browser";
 import { Link } from "react-router-dom";
 import { motion, useReducedMotion } from "motion/react";
-import { ArrowLeft, ChevronDown, Mail, MessageCircle } from "lucide-react";
+import { ArrowLeft, ChevronDown, Send } from "lucide-react";
 import { Container } from "../components/Container";
 import { easeOut } from "../lib/motion";
 
@@ -28,10 +29,16 @@ const initialFormData: ProjectFormData = {
 
 const WHATSAPP_NUMBER = "2348149798764";
 const CONTACT_EMAIL = "trilottechnologies@gmail.com";
+const EMAILJS_PUBLIC_KEY = "UtDMrfguFimDekRUr";
+const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
 
 export default function StartProject() {
   const reduceMotion = useReducedMotion();
   const [formData, setFormData] = useState<ProjectFormData>(initialFormData);
+  const [submitState, setSubmitState] = useState<
+    "idle" | "sending" | "sent" | "error"
+  >("idle");
 
   function updateField(field: keyof ProjectFormData, value: string) {
     setFormData((current) => ({
@@ -55,16 +62,41 @@ export default function StartProject() {
     ].join("\n");
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(buildContactMessage())}`;
-    window.open(whatsappUrl, "_blank", "noopener,noreferrer");
-  }
+    setSubmitState("sending");
 
-  const emailUrl = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
-    `Project enquiry from ${formData.name || "a prospective client"}`,
-  )}&body=${encodeURIComponent(buildContactMessage())}`;
+    try {
+      if (EMAILJS_SERVICE_ID && EMAILJS_TEMPLATE_ID) {
+        await emailjs.send(
+          EMAILJS_SERVICE_ID,
+          EMAILJS_TEMPLATE_ID,
+          {
+            name: formData.name,
+            email: formData.email,
+            business: formData.business || "Not provided",
+            service: formData.service,
+            budget: formData.budget || "Not provided",
+            timeline: formData.timeline || "Not provided",
+            details: formData.details,
+            message: buildContactMessage(),
+            to_email: CONTACT_EMAIL,
+          },
+          EMAILJS_PUBLIC_KEY,
+        );
+        setSubmitState("sent");
+        setFormData(initialFormData);
+        return;
+      }
+
+      const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(buildContactMessage())}`;
+      window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+      setSubmitState("sent");
+    } catch {
+      setSubmitState("error");
+    }
+  }
 
   return (
     <main className="min-h-screen bg-trilot-paper text-trilot-navy dark:bg-trilot-ink dark:text-trilot-paper">
@@ -378,10 +410,15 @@ export default function StartProject() {
                 <div className="flex flex-col items-stretch gap-4 bg-trilot-navy/[0.03] px-5 py-7 sm:flex-row sm:items-center sm:justify-between sm:px-8 sm:py-8 dark:bg-trilot-paper/[0.04]">
                   <button
                     type="submit"
-                    className="group inline-flex min-h-12 items-center justify-center gap-3 bg-trilot-coral px-5 py-3 text-sm font-bold text-trilot-navy transition-colors hover:bg-trilot-coral-strong hover:text-trilot-paper focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-trilot-coral sm:px-6"
+                    disabled={submitState === "sending"}
+                    className="group inline-flex min-h-12 items-center justify-center gap-3 bg-trilot-coral px-5 py-3 text-sm font-bold text-trilot-navy transition-colors hover:bg-trilot-coral-strong hover:text-trilot-paper focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-trilot-coral disabled:cursor-wait disabled:opacity-60 sm:px-6"
                   >
-                    Continue on WhatsApp
-                    <MessageCircle size={17} aria-hidden="true" />
+                    {submitState === "sending"
+                      ? "Sending details..."
+                      : EMAILJS_SERVICE_ID && EMAILJS_TEMPLATE_ID
+                        ? "Send project details"
+                        : "Continue on WhatsApp"}
+                    <Send size={17} aria-hidden="true" />
                     <span
                       aria-hidden="true"
                       className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
@@ -390,13 +427,16 @@ export default function StartProject() {
                     </span>
                   </button>
 
-                  <a
-                    href={emailUrl}
-                    className="inline-flex items-center gap-2 text-sm font-medium text-trilot-navy/65 transition-colors hover:text-trilot-coral dark:text-trilot-paper/65"
-                  >
-                    <Mail size={16} aria-hidden="true" />
-                    Prefer email?
-                  </a>
+                  {submitState === "sent" ? (
+                    <p className="text-sm text-trilot-coral" role="status">
+                      Thanks. Your project details have been sent.
+                    </p>
+                  ) : submitState === "error" ? (
+                    <p className="text-sm text-trilot-coral" role="alert">
+                      We could not send that yet. Please try again or contact us
+                      on WhatsApp.
+                    </p>
+                  ) : null}
                 </div>
               </div>
             </form>

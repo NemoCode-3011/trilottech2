@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { AnimatePresence } from "motion/react";
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 
 import { SplashScreen } from "./components/SplashScreen";
 import { ThemeProvider } from "./context/ThemeContext";
@@ -188,11 +188,7 @@ function AppContent() {
 }
 
 export function App() {
-  return (
-    <BrowserRouter>
-      <AppContent />
-    </BrowserRouter>
-  );
+  return <AppContent />;
 }
 
 export default App;
