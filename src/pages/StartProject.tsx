@@ -100,7 +100,7 @@ export default function StartProject() {
 
   return (
     <main className="min-h-screen bg-trilot-paper text-trilot-navy dark:bg-trilot-ink dark:text-trilot-paper">
-      <Container className="py-8 sm:py-10 lg:py-12">
+      <Container className="pb-8 pt-28 sm:pb-10 sm:pt-32 lg:pb-12 lg:pt-36">
         <Link
           to="/"
           className="group inline-flex items-center gap-2 font-mono text-[0.62rem] uppercase tracking-[0.12em] text-trilot-navy/60 transition-colors hover:text-trilot-coral focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-trilot-coral dark:text-trilot-paper/60"
@@ -112,7 +112,7 @@ export default function StartProject() {
           Back to home
         </Link>
 
-        <div className="mt-16 grid gap-16 lg:grid-cols-[0.72fr_1.28fr] lg:gap-24">
+        <div className="mt-12 grid gap-12 sm:mt-16 sm:gap-16 lg:grid-cols-[0.72fr_1.28fr] lg:gap-24">
           <motion.header
             initial={reduceMotion ? false : { opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -407,7 +407,7 @@ export default function StartProject() {
                   </div>
                 </fieldset>
 
-                <div className="flex flex-col items-stretch gap-4 bg-trilot-navy/3 px-5 py-7 sm:flex-row sm:items-center sm:justify-between sm:px-8 sm:py-8 dark:bg-trilot-paper/4">
+                <div className="flex flex-col items-stretch gap-4 bg-trilot-navy/[0.03] px-5 py-7 sm:flex-row sm:items-center sm:justify-between sm:px-8 sm:py-8 dark:bg-trilot-paper/[0.04]">
                   <button
                     type="submit"
                     disabled={submitState === "sending"}
