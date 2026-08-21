@@ -12,7 +12,8 @@ const navigation = [
 const services = [
   { label: "Websites", href: "/services" },
   { label: "Web applications", href: "/services" },
-  { label: "Support", href: "/services" },
+  { label: "Website redesign", href: "/services" },
+  { label: "Maintenance & support", href: "/services" },
 ] as const;
 
 export default function Footer() {

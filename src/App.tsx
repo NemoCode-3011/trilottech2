@@ -46,6 +46,82 @@ function HashScroll() {
   return null;
 }
 
+const SITE_URL = "https://trilot.studio";
+
+const routeMetadata: Record<string, { title: string; description: string }> = {
+  "/": {
+    title: "Trilot | Websites that move businesses forward",
+    description:
+      "Distinctive websites and digital products that help ambitious businesses earn attention, trust, and enquiries.",
+  },
+  "/about": {
+    title: "About Trilot | Digital work with purpose",
+    description:
+      "Meet Trilot, a strategy, design, and development partner for businesses ready to move forward.",
+  },
+  "/services": {
+    title: "Services | Trilot Technologies",
+    description:
+      "Websites, web applications, and ongoing digital support built around real business goals.",
+  },
+  "/start-project": {
+    title: "Start a Project | Trilot Technologies",
+    description:
+      "Tell Trilot what you are building and start a practical conversation about your next digital project.",
+  },
+  "/privacy": {
+    title: "Privacy | Trilot Technologies",
+    description: "How Trilot handles information shared through this website.",
+  },
+  "/terms": {
+    title: "Terms | Trilot Technologies",
+    description: "The general terms for working with Trilot Technologies.",
+  },
+  "/security": {
+    title: "Security | Trilot Technologies",
+    description:
+      "How Trilot approaches project and client information security.",
+  },
+};
+
+function Seo() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    const metadata = routeMetadata[pathname] ?? {
+      title: "Trilot | Digital experiences built to move business forward",
+      description:
+        "Trilot designs and builds distinctive websites and digital products for ambitious businesses.",
+    };
+    const canonicalUrl = `${SITE_URL}${pathname === "/" ? "/" : pathname}`;
+
+    document.title = metadata.title;
+
+    const setMeta = (selector: string, attribute: string, content: string) => {
+      const element = document.head.querySelector<HTMLMetaElement>(selector);
+      element?.setAttribute(attribute, content);
+    };
+
+    setMeta('meta[name="description"]', "content", metadata.description);
+    setMeta('meta[property="og:title"]', "content", metadata.title);
+    setMeta('meta[property="og:description"]', "content", metadata.description);
+    setMeta('meta[property="og:url"]', "content", canonicalUrl);
+    setMeta('meta[name="twitter:title"]', "content", metadata.title);
+    setMeta(
+      'meta[name="twitter:description"]',
+      "content",
+      metadata.description,
+    );
+
+    const canonical = document.head.querySelector<HTMLLinkElement>(
+      'link[rel="canonical"]',
+    );
+    canonical?.setAttribute("href", canonicalUrl);
+  }, [pathname]);
+
+  return null;
+}
+
 function HomePage({ showSplash }: { showSplash: boolean }) {
   return (
     <>
@@ -127,6 +203,7 @@ function AppContent() {
   return (
     <>
       <HashScroll />
+      <Seo />
       <ThemeProvider>
         <AnimatePresence mode="wait">
           {splashActive && <SplashScreen onComplete={completeSplash} />}
