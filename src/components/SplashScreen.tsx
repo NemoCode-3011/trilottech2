@@ -32,7 +32,7 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
     >
       <motion.div
         aria-hidden="true"
-        className="absolute -right-24 -top-48 h-128 w-md rotate-[18deg] rounded-[48%_52%_58%_42%] bg-trilot-coral"
+        className="absolute -right-24 -top-48 h-128 w-md rotate-18 rounded-[48%_52%_58%_42%] bg-trilot-coral"
         initial={{ opacity: 0, scale: 0.8, rotate: 8 }}
         animate={{ opacity: 0.9, scale: 1, rotate: 18 }}
         transition={{ duration: shouldReduceMotion ? 0 : 1.2, ease: easeOut }}
