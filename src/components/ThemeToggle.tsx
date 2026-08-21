@@ -18,7 +18,7 @@ export function ThemeToggle({ className = "" }: ThemeToggleProps) {
       onClick={toggleTheme}
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
       aria-pressed={isDark}
-      className={`relative flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-full transition-colors duration-200 hover:bg-[var(--nav-hover-bg)] ${className}`}
+      className={`relative flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-full transition-colors duration-200 hover:bg-(--nav-hover-bg) ${className}`}
       style={{ color: "var(--nav-text)" }}
     >
       <AnimatePresence mode="wait" initial={false}>
