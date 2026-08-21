@@ -2,11 +2,9 @@ import { useState } from "react";
 import type { FormEvent } from "react";
 import { Link } from "react-router-dom";
 import { motion, useReducedMotion } from "motion/react";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ChevronDown, Mail, MessageCircle } from "lucide-react";
 import { Container } from "../components/Container";
 import { easeOut } from "../lib/motion";
-
-type FormStatus = "idle" | "submitting" | "success" | "error";
 
 type ProjectFormData = {
   name: string;
@@ -28,11 +26,12 @@ const initialFormData: ProjectFormData = {
   timeline: "",
 };
 
+const WHATSAPP_NUMBER = "2348149798764";
+const CONTACT_EMAIL = "trilottechnologies@gmail.com";
+
 export default function StartProject() {
   const reduceMotion = useReducedMotion();
   const [formData, setFormData] = useState<ProjectFormData>(initialFormData);
-  const [status, setStatus] = useState<FormStatus>("idle");
-  const [message, setMessage] = useState("");
 
   function updateField(field: keyof ProjectFormData, value: string) {
     setFormData((current) => ({
@@ -41,42 +40,31 @@ export default function StartProject() {
     }));
   }
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  function buildContactMessage() {
+    return [
+      "Hello Trilot, I would like to discuss a project.",
+      "",
+      `Name: ${formData.name}`,
+      `Email: ${formData.email}`,
+      `Business: ${formData.business || "Not provided"}`,
+      `Service: ${formData.service}`,
+      `Budget: ${formData.budget || "Not provided"}`,
+      `Timeline: ${formData.timeline || "Not provided"}`,
+      "",
+      `Project details: ${formData.details}`,
+    ].join("\n");
+  }
+
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    setStatus("submitting");
-    setMessage("");
-
-    try {
-      /*
-       * Replace this temporary block with your real endpoint.
-       *
-       * Example:
-       * await fetch("/api/project-inquiry", {
-       *   method: "POST",
-       *   headers: { "Content-Type": "application/json" },
-       *   body: JSON.stringify(formData),
-       * });
-       */
-
-      await new Promise((resolve) => {
-        window.setTimeout(resolve, 700);
-      });
-
-      console.log("Project inquiry:", formData);
-
-      setStatus("success");
-      setMessage(
-        "Thanks — your project details have been received. We’ll be in touch soon.",
-      );
-      setFormData(initialFormData);
-    } catch {
-      setStatus("error");
-      setMessage(
-        "Something went wrong. Please try again or email hello@trilot.studio.",
-      );
-    }
+    const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(buildContactMessage())}`;
+    window.open(whatsappUrl, "_blank", "noopener,noreferrer");
   }
+
+  const emailUrl = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
+    `Project enquiry from ${formData.name || "a prospective client"}`,
+  )}&body=${encodeURIComponent(buildContactMessage())}`;
 
   return (
     <main className="min-h-screen bg-trilot-paper text-trilot-navy dark:bg-trilot-ink dark:text-trilot-paper">
@@ -131,152 +119,113 @@ export default function StartProject() {
             }}
           >
             <form
-              noValidate
               onSubmit={handleSubmit}
-              className="border-t border-trilot-navy/20 dark:border-trilot-paper/20"
+              className="overflow-hidden border border-trilot-navy/15 bg-trilot-paper/50 dark:border-trilot-paper/15 dark:bg-trilot-navy/30"
             >
-              <div
-                aria-live="polite"
-                aria-atomic="true"
-                role="status"
-                className="sr-only"
-              >
-                {message}
-              </div>
+              <div className="divide-y divide-trilot-navy/15 dark:divide-trilot-paper/15">
+                <fieldset className="px-5 py-7 sm:px-8 sm:py-10">
+                  <legend className="font-mono text-[0.6rem] uppercase tracking-[0.12em] text-trilot-navy/45 dark:text-trilot-paper/45">
+                    About you
+                  </legend>
 
-              {status === "success" ? (
-                <div className="py-12 sm:py-16">
-                  <p className="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-trilot-coral">
-                    Received
-                  </p>
-
-                  <h2 className="mt-5 max-w-[10ch] font-display text-5xl font-semibold leading-[0.9] tracking-[-0.07em] sm:text-6xl">
-                    Thanks. We’ll be in touch.
-                  </h2>
-
-                  <p className="mt-6 max-w-lg text-base leading-relaxed text-trilot-navy/60 dark:text-trilot-paper/60">
-                    Your project details are on their way. We’ll review them and
-                    respond as soon as we can.
-                  </p>
-
-                  <Link
-                    to="/"
-                    className="mt-10 inline-flex items-center gap-3 border-b border-trilot-navy/40 pb-2 text-sm font-medium transition-colors hover:border-trilot-coral hover:text-trilot-coral focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-trilot-coral"
-                  >
-                    Back to home
-                    <span aria-hidden="true">↗</span>
-                  </Link>
-                </div>
-              ) : (
-                <div className="divide-y divide-trilot-navy/15 dark:divide-trilot-paper/15">
-                  <fieldset className="py-8 sm:py-10">
-                    <legend className="font-mono text-[0.6rem] uppercase tracking-[0.12em] text-trilot-navy/45 dark:text-trilot-paper/45">
-                      About you
-                    </legend>
-
-                    <div className="mt-7 grid gap-6 sm:grid-cols-2">
-                      <div>
-                        <label
-                          htmlFor="name"
-                          className="block text-sm font-medium"
-                        >
-                          Name{" "}
-                          <span
-                            aria-hidden="true"
-                            className="text-trilot-coral"
-                          >
-                            *
-                          </span>
-                        </label>
-
-                        <input
-                          id="name"
-                          name="name"
-                          type="text"
-                          autoComplete="name"
-                          required
-                          value={formData.name}
-                          onChange={(event) =>
-                            updateField("name", event.target.value)
-                          }
-                          className="mt-3 w-full border-b border-trilot-navy/30 bg-transparent px-0 py-3 text-base outline-none transition-colors placeholder:text-trilot-navy/35 focus:border-trilot-coral dark:border-trilot-paper/30 dark:placeholder:text-trilot-paper/35"
-                          placeholder="Your full name"
-                        />
-                      </div>
-
-                      <div>
-                        <label
-                          htmlFor="email"
-                          className="block text-sm font-medium"
-                        >
-                          Email{" "}
-                          <span
-                            aria-hidden="true"
-                            className="text-trilot-coral"
-                          >
-                            *
-                          </span>
-                        </label>
-
-                        <input
-                          id="email"
-                          name="email"
-                          type="email"
-                          autoComplete="email"
-                          inputMode="email"
-                          required
-                          value={formData.email}
-                          onChange={(event) =>
-                            updateField("email", event.target.value)
-                          }
-                          className="mt-3 w-full border-b border-trilot-navy/30 bg-transparent px-0 py-3 text-base outline-none transition-colors placeholder:text-trilot-navy/35 focus:border-trilot-coral dark:border-trilot-paper/30 dark:placeholder:text-trilot-paper/35"
-                          placeholder="you@business.com"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="mt-6">
+                  <div className="mt-7 grid gap-6 sm:grid-cols-2">
+                    <div>
                       <label
-                        htmlFor="business"
+                        htmlFor="name"
                         className="block text-sm font-medium"
                       >
-                        Business name{" "}
-                        <span className="font-normal text-trilot-navy/45 dark:text-trilot-paper/45">
-                          (optional)
-                        </span>
-                      </label>
-
-                      <input
-                        id="business"
-                        name="business"
-                        type="text"
-                        autoComplete="organization"
-                        value={formData.business}
-                        onChange={(event) =>
-                          updateField("business", event.target.value)
-                        }
-                        className="mt-3 w-full border-b border-trilot-navy/30 bg-transparent px-0 py-3 text-base outline-none transition-colors placeholder:text-trilot-navy/35 focus:border-trilot-coral dark:border-trilot-paper/30 dark:placeholder:text-trilot-paper/35"
-                        placeholder="Your business or organisation"
-                      />
-                    </div>
-                  </fieldset>
-
-                  <fieldset className="py-8 sm:py-10">
-                    <legend className="font-mono text-[0.6rem] uppercase tracking-[0.12em] text-trilot-navy/45 dark:text-trilot-paper/45">
-                      About the work
-                    </legend>
-
-                    <div className="mt-7">
-                      <label
-                        htmlFor="service"
-                        className="block text-sm font-medium"
-                      >
-                        What do you need help with?{" "}
+                        Name{" "}
                         <span aria-hidden="true" className="text-trilot-coral">
                           *
                         </span>
                       </label>
 
+                      <input
+                        id="name"
+                        name="name"
+                        type="text"
+                        autoComplete="name"
+                        required
+                        value={formData.name}
+                        onChange={(event) =>
+                          updateField("name", event.target.value)
+                        }
+                        className="mt-3 w-full border-b border-trilot-navy/30 bg-transparent px-0 py-3 text-base outline-none transition-colors placeholder:text-trilot-navy/35 focus:border-trilot-coral dark:border-trilot-paper/30 dark:placeholder:text-trilot-paper/35"
+                        placeholder="Your full name"
+                      />
+                    </div>
+
+                    <div>
+                      <label
+                        htmlFor="email"
+                        className="block text-sm font-medium"
+                      >
+                        Email{" "}
+                        <span aria-hidden="true" className="text-trilot-coral">
+                          *
+                        </span>
+                      </label>
+
+                      <input
+                        id="email"
+                        name="email"
+                        type="email"
+                        autoComplete="email"
+                        inputMode="email"
+                        required
+                        value={formData.email}
+                        onChange={(event) =>
+                          updateField("email", event.target.value)
+                        }
+                        className="mt-3 w-full border-b border-trilot-navy/30 bg-transparent px-0 py-3 text-base outline-none transition-colors placeholder:text-trilot-navy/35 focus:border-trilot-coral dark:border-trilot-paper/30 dark:placeholder:text-trilot-paper/35"
+                        placeholder="you@business.com"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="mt-6">
+                    <label
+                      htmlFor="business"
+                      className="block text-sm font-medium"
+                    >
+                      Business name{" "}
+                      <span className="font-normal text-trilot-navy/45 dark:text-trilot-paper/45">
+                        (optional)
+                      </span>
+                    </label>
+
+                    <input
+                      id="business"
+                      name="business"
+                      type="text"
+                      autoComplete="organization"
+                      value={formData.business}
+                      onChange={(event) =>
+                        updateField("business", event.target.value)
+                      }
+                      className="mt-3 w-full border-b border-trilot-navy/30 bg-transparent px-0 py-3 text-base outline-none transition-colors placeholder:text-trilot-navy/35 focus:border-trilot-coral dark:border-trilot-paper/30 dark:placeholder:text-trilot-paper/35"
+                      placeholder="Your business or organisation"
+                    />
+                  </div>
+                </fieldset>
+
+                <fieldset className="px-5 py-7 sm:px-8 sm:py-10">
+                  <legend className="font-mono text-[0.6rem] uppercase tracking-[0.12em] text-trilot-navy/45 dark:text-trilot-paper/45">
+                    About the work
+                  </legend>
+
+                  <div className="mt-7">
+                    <label
+                      htmlFor="service"
+                      className="block text-sm font-medium"
+                    >
+                      What do you need help with?{" "}
+                      <span aria-hidden="true" className="text-trilot-coral">
+                        *
+                      </span>
+                    </label>
+
+                    <div className="relative mt-3">
                       <select
                         id="service"
                         name="service"
@@ -285,7 +234,7 @@ export default function StartProject() {
                         onChange={(event) =>
                           updateField("service", event.target.value)
                         }
-                        className="mt-3 w-full border-b border-trilot-navy/30 bg-transparent px-0 py-3 text-base outline-none transition-colors focus:border-trilot-coral dark:border-trilot-paper/30"
+                        className="form-select w-full border-b border-trilot-navy/30 bg-transparent px-0 py-3 pr-8 text-base outline-none transition-colors focus:border-trilot-coral dark:border-trilot-paper/30"
                       >
                         <option value="" disabled>
                           Choose one
@@ -303,60 +252,66 @@ export default function StartProject() {
                         </option>
                         <option value="Not sure yet">I’m not sure yet</option>
                       </select>
+                      <ChevronDown
+                        aria-hidden="true"
+                        className="pointer-events-none absolute right-0 top-1/2 h-4 w-4 -translate-y-1/2 text-trilot-coral"
+                      />
                     </div>
+                  </div>
 
-                    <div className="mt-8">
+                  <div className="mt-8">
+                    <label
+                      htmlFor="details"
+                      className="block text-sm font-medium"
+                    >
+                      Tell us a little about it{" "}
+                      <span aria-hidden="true" className="text-trilot-coral">
+                        *
+                      </span>
+                    </label>
+
+                    <p
+                      id="details-hint"
+                      className="mt-2 text-sm leading-relaxed text-trilot-navy/50 dark:text-trilot-paper/50"
+                    >
+                      What are you trying to achieve, and what would a useful
+                      outcome look like?
+                    </p>
+
+                    <textarea
+                      id="details"
+                      name="details"
+                      rows={7}
+                      required
+                      aria-describedby="details-hint"
+                      value={formData.details}
+                      onChange={(event) =>
+                        updateField("details", event.target.value)
+                      }
+                      className="mt-4 w-full resize-y border border-trilot-navy/25 bg-transparent p-4 text-base leading-relaxed outline-none transition-colors placeholder:text-trilot-navy/35 focus:border-trilot-coral dark:border-trilot-paper/25 dark:placeholder:text-trilot-paper/35"
+                      placeholder="Tell us about your business, what you need, and anything else that would be helpful."
+                    />
+                  </div>
+                </fieldset>
+
+                <fieldset className="px-5 py-7 sm:px-8 sm:py-10">
+                  <legend className="font-mono text-[0.6rem] uppercase tracking-[0.12em] text-trilot-navy/45 dark:text-trilot-paper/45">
+                    Optional details
+                  </legend>
+
+                  <div className="mt-7 grid gap-6 sm:grid-cols-2">
+                    <div>
                       <label
-                        htmlFor="details"
+                        htmlFor="budget"
                         className="block text-sm font-medium"
                       >
-                        Tell us a little about it{" "}
-                        <span aria-hidden="true" className="text-trilot-coral">
-                          *
+                        Budget range{" "}
+                        <span className="font-normal text-trilot-navy/45 dark:text-trilot-paper/45">
+                          (optional)
                         </span>
                       </label>
 
-                      <p
-                        id="details-hint"
-                        className="mt-2 text-sm leading-relaxed text-trilot-navy/50 dark:text-trilot-paper/50"
-                      >
-                        What are you trying to achieve, and what would a useful
-                        outcome look like?
-                      </p>
-
-                      <textarea
-                        id="details"
-                        name="details"
-                        rows={7}
-                        required
-                        aria-describedby="details-hint"
-                        value={formData.details}
-                        onChange={(event) =>
-                          updateField("details", event.target.value)
-                        }
-                        className="mt-4 w-full resize-y border border-trilot-navy/25 bg-transparent p-4 text-base leading-relaxed outline-none transition-colors placeholder:text-trilot-navy/35 focus:border-trilot-coral dark:border-trilot-paper/25 dark:placeholder:text-trilot-paper/35"
-                        placeholder="Tell us about your business, what you need, and anything else that would be helpful."
-                      />
-                    </div>
-                  </fieldset>
-
-                  <fieldset className="py-8 sm:py-10">
-                    <legend className="font-mono text-[0.6rem] uppercase tracking-[0.12em] text-trilot-navy/45 dark:text-trilot-paper/45">
-                      Optional details
-                    </legend>
-
-                    <div className="mt-7 grid gap-6 sm:grid-cols-2">
-                      <div>
-                        <label
-                          htmlFor="budget"
-                          className="block text-sm font-medium"
-                        >
-                          Budget range{" "}
-                          <span className="font-normal text-trilot-navy/45 dark:text-trilot-paper/45">
-                            (optional)
-                          </span>
-                        </label>
-
+                      <div className="relative mt-3">
                         <select
                           id="budget"
                           name="budget"
@@ -364,7 +319,7 @@ export default function StartProject() {
                           onChange={(event) =>
                             updateField("budget", event.target.value)
                           }
-                          className="mt-3 w-full border-b border-trilot-navy/30 bg-transparent px-0 py-3 text-base outline-none transition-colors focus:border-trilot-coral dark:border-trilot-paper/30"
+                          className="form-select w-full border-b border-trilot-navy/30 bg-transparent px-0 py-3 pr-8 text-base outline-none transition-colors focus:border-trilot-coral dark:border-trilot-paper/30"
                         >
                           <option value="">Prefer not to say</option>
                           <option value="Under ₦500k">Under ₦500k</option>
@@ -373,19 +328,25 @@ export default function StartProject() {
                           <option value="₦3M–₦5M">₦3M–₦5M</option>
                           <option value="Above ₦5M">Above ₦5M</option>
                         </select>
+                        <ChevronDown
+                          aria-hidden="true"
+                          className="pointer-events-none absolute right-0 top-1/2 h-4 w-4 -translate-y-1/2 text-trilot-coral"
+                        />
                       </div>
+                    </div>
 
-                      <div>
-                        <label
-                          htmlFor="timeline"
-                          className="block text-sm font-medium"
-                        >
-                          Timeline{" "}
-                          <span className="font-normal text-trilot-navy/45 dark:text-trilot-paper/45">
-                            (optional)
-                          </span>
-                        </label>
+                    <div>
+                      <label
+                        htmlFor="timeline"
+                        className="block text-sm font-medium"
+                      >
+                        Timeline{" "}
+                        <span className="font-normal text-trilot-navy/45 dark:text-trilot-paper/45">
+                          (optional)
+                        </span>
+                      </label>
 
+                      <div className="relative mt-3">
                         <select
                           id="timeline"
                           name="timeline"
@@ -393,7 +354,7 @@ export default function StartProject() {
                           onChange={(event) =>
                             updateField("timeline", event.target.value)
                           }
-                          className="mt-3 w-full border-b border-trilot-navy/30 bg-transparent px-0 py-3 text-base outline-none transition-colors focus:border-trilot-coral dark:border-trilot-paper/30"
+                          className="form-select w-full border-b border-trilot-navy/30 bg-transparent px-0 py-3 pr-8 text-base outline-none transition-colors focus:border-trilot-coral dark:border-trilot-paper/30"
                         >
                           <option value="">Not sure yet</option>
                           <option value="As soon as possible">
@@ -405,44 +366,39 @@ export default function StartProject() {
                           <option value="In 1–3 months">In 1–3 months</option>
                           <option value="In 3–6 months">In 3–6 months</option>
                         </select>
+                        <ChevronDown
+                          aria-hidden="true"
+                          className="pointer-events-none absolute right-0 top-1/2 h-4 w-4 -translate-y-1/2 text-trilot-coral"
+                        />
                       </div>
                     </div>
-                  </fieldset>
-
-                  {status === "error" ? (
-                    <p
-                      role="alert"
-                      className="py-5 text-sm leading-relaxed text-[#a33b2a]"
-                    >
-                      {message}
-                    </p>
-                  ) : null}
-
-                  <div className="flex flex-col items-start gap-5 py-8 sm:flex-row sm:items-center sm:justify-between sm:py-10">
-                    <button
-                      type="submit"
-                      disabled={status === "submitting"}
-                      className="group inline-flex items-center gap-3 bg-trilot-navy px-6 py-3 text-sm font-medium text-trilot-paper transition-colors hover:bg-trilot-coral hover:text-trilot-navy focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-trilot-coral disabled:cursor-not-allowed disabled:opacity-60"
-                    >
-                      {status === "submitting"
-                        ? "Sending details…"
-                        : "Send project details"}
-
-                      <span
-                        aria-hidden="true"
-                        className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
-                      >
-                        ↗
-                      </span>
-                    </button>
-
-                    <p className="max-w-xs text-sm leading-relaxed text-trilot-navy/45 dark:text-trilot-paper/45">
-                      We’ll only use these details to respond to your project
-                      enquiry.
-                    </p>
                   </div>
+                </fieldset>
+
+                <div className="flex flex-col items-stretch gap-4 bg-trilot-navy/[0.03] px-5 py-7 sm:flex-row sm:items-center sm:justify-between sm:px-8 sm:py-8 dark:bg-trilot-paper/[0.04]">
+                  <button
+                    type="submit"
+                    className="group inline-flex min-h-12 items-center justify-center gap-3 bg-trilot-coral px-5 py-3 text-sm font-bold text-trilot-navy transition-colors hover:bg-trilot-coral-strong hover:text-trilot-paper focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-trilot-coral sm:px-6"
+                  >
+                    Continue on WhatsApp
+                    <MessageCircle size={17} aria-hidden="true" />
+                    <span
+                      aria-hidden="true"
+                      className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
+                    >
+                      ↗
+                    </span>
+                  </button>
+
+                  <a
+                    href={emailUrl}
+                    className="inline-flex items-center gap-2 text-sm font-medium text-trilot-navy/65 transition-colors hover:text-trilot-coral dark:text-trilot-paper/65"
+                  >
+                    <Mail size={16} aria-hidden="true" />
+                    Prefer email?
+                  </a>
                 </div>
-              )}
+              </div>
             </form>
           </motion.div>
         </div>

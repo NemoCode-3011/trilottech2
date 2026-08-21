@@ -152,7 +152,7 @@ export default function Services() {
     <section
       id="services"
       aria-labelledby="services-heading"
-      className="relative w-full min-w-0 overflow-x-hidden bg-(--color-surface) text-(--color-on-surface)"
+      className="relative scroll-mt-28 w-full min-w-0 overflow-x-hidden bg-(--color-surface) text-(--color-on-surface)"
     >
       <div
         aria-hidden="true"

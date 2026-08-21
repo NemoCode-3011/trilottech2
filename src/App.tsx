@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import type { ReactNode } from "react";
 import { AnimatePresence } from "motion/react";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 
@@ -12,9 +13,14 @@ import Services from "./sections/Services";
 import Process from "./sections/Process";
 import Work from "./sections/Work";
 import ContactCta from "./sections/Contact";
+import Faq from "./sections/Faq";
 import Footer from "./sections/Footer";
 import ProjectPage from "./pages/ProjectPage";
 import StartProject from "./pages/StartProject";
+import ServicesPage from "./pages/ServicesPage";
+import PrivacyPage from "./pages/PrivacyPage";
+import TermsPage from "./pages/TermsPage";
+import SecurityPage from "./pages/SecurityPage";
 
 function HashScroll() {
   const { pathname, hash } = useLocation();
@@ -49,6 +55,7 @@ function HomePage({ showSplash }: { showSplash: boolean }) {
         <Services />
         <Process />
         <Work />
+        <Faq />
         <ContactCta />
       </main>
 
@@ -77,42 +84,101 @@ function ProjectPageLayout() {
   );
 }
 
-export function App() {
+function ServicesPageLayout() {
+  return (
+    <>
+      <Navbar />
+      <ServicesPage />
+      <Footer />
+    </>
+  );
+}
+
+function LegalPageLayout({ children }: { children: ReactNode }) {
+  return (
+    <>
+      <Navbar />
+      {children}
+      <Footer />
+    </>
+  );
+}
+
+function AppContent() {
+  const location = useLocation();
   const [showSplash, setShowSplash] = useState(true);
+  const splashActive = showSplash && location.pathname === "/";
 
   const completeSplash = useCallback(() => {
     setShowSplash(false);
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = showSplash ? "hidden" : "";
+    document.body.style.overflow = splashActive ? "hidden" : "";
 
     return () => {
       document.body.style.overflow = "";
     };
-  }, [showSplash]);
+  }, [splashActive]);
 
   return (
-    <BrowserRouter>
+    <>
       <HashScroll />
       <ThemeProvider>
         <AnimatePresence mode="wait">
-          {showSplash && <SplashScreen onComplete={completeSplash} />}
+          {splashActive && <SplashScreen onComplete={completeSplash} />}
         </AnimatePresence>
 
         <div
-          aria-hidden={showSplash}
-          className={showSplash ? "pointer-events-none" : ""}
+          aria-hidden={splashActive}
+          className={splashActive ? "pointer-events-none" : ""}
         >
           <Routes>
             <Route path="/" element={<HomePage showSplash={showSplash} />} />
 
             <Route path="/start-project" element={<StartProjectPage />} />
 
+            <Route path="/services" element={<ServicesPageLayout />} />
+
+            <Route
+              path="/privacy"
+              element={
+                <LegalPageLayout>
+                  <PrivacyPage />
+                </LegalPageLayout>
+              }
+            />
+
+            <Route
+              path="/terms"
+              element={
+                <LegalPageLayout>
+                  <TermsPage />
+                </LegalPageLayout>
+              }
+            />
+
+            <Route
+              path="/security"
+              element={
+                <LegalPageLayout>
+                  <SecurityPage />
+                </LegalPageLayout>
+              }
+            />
+
             <Route path="/work/:slug" element={<ProjectPageLayout />} />
           </Routes>
         </div>
       </ThemeProvider>
+    </>
+  );
+}
+
+export function App() {
+  return (
+    <BrowserRouter>
+      <AppContent />
     </BrowserRouter>
   );
 }

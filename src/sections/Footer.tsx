@@ -9,9 +9,9 @@ const navigation = [
 ] as const;
 
 const services = [
-  { label: "Websites", href: "/#services" },
-  { label: "Web applications", href: "/#services" },
-  { label: "Support", href: "/#services" },
+  { label: "Websites", href: "/services" },
+  { label: "Web applications", href: "/services" },
+  { label: "Support", href: "/services" },
 ] as const;
 
 export default function Footer() {
@@ -41,10 +41,10 @@ export default function Footer() {
             </p>
 
             <a
-              href="mailto:hello@trilot.studio"
+              href="mailto:trilottechnologies@gmail.com"
               className="mt-8 inline-flex border-b border-current/40 pb-1 text-sm text-current transition-colors hover:border-trilot-coral hover:text-trilot-coral focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-trilot-coral"
             >
-              hello@trilot.studio
+              trilottechnologies@gmail.com
             </a>
           </div>
 
@@ -134,6 +134,20 @@ export default function Footer() {
               className="font-mono text-[0.56rem] uppercase tracking-widest text-current/45 transition-colors hover:text-trilot-coral focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-trilot-coral"
             >
               Privacy
+            </Link>
+
+            <Link
+              to="/terms"
+              className="font-mono text-[0.56rem] uppercase tracking-widest text-current/45 transition-colors hover:text-trilot-coral focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-trilot-coral"
+            >
+              Terms
+            </Link>
+
+            <Link
+              to="/security"
+              className="font-mono text-[0.56rem] uppercase tracking-widest text-current/45 transition-colors hover:text-trilot-coral focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-trilot-coral"
+            >
+              Security
             </Link>
 
             <span className="font-mono text-[0.56rem] uppercase tracking-widest text-current/45">

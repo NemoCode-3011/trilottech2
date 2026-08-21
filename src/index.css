@@ -78,6 +78,26 @@
     font: inherit;
   }
 
+  .form-select {
+    appearance: none;
+    color: var(--color-on-surface);
+    color-scheme: light;
+  }
+
+  .form-select option {
+    background: var(--color-trilot-paper);
+    color: var(--color-trilot-navy);
+  }
+
+  .dark .form-select {
+    color-scheme: dark;
+  }
+
+  .dark .form-select option {
+    background: var(--color-trilot-ink);
+    color: var(--color-trilot-paper);
+  }
+
   button,
   a {
     -webkit-tap-highlight-color: transparent;

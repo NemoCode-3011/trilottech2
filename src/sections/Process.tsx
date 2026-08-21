@@ -10,7 +10,7 @@ export default function Process() {
     <section
       id="process"
       aria-labelledby="process-heading"
-      className="relative overflow-hidden bg-trilot-paper text-trilot-navy dark:bg-trilot-navy dark:text-trilot-paper"
+      className="relative scroll-mt-28 overflow-hidden bg-trilot-paper text-trilot-navy dark:bg-trilot-navy dark:text-trilot-paper"
     >
       <Container className="py-24 sm:py-32 lg:py-40">
         <div className="grid gap-16 xl:grid-cols-[0.68fr_1.32fr] xl:gap-24">

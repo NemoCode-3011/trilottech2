@@ -1,6 +1,7 @@
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useState } from "react";
 import { Container } from "../components/Container";
+import { Link } from "react-router-dom";
 import { workItems } from "../data/works";
 import { easeOut } from "../lib/motion";
 
@@ -83,8 +84,8 @@ function ProjectRow({
   onActivate: () => void;
 }) {
   return (
-    <a
-      href={project.caseStudyHref}
+    <Link
+      to={project.caseStudyHref}
       onMouseEnter={onActivate}
       onFocus={onActivate}
       className={[
@@ -157,7 +158,7 @@ function ProjectRow({
           />
         </div>
       </div>
-    </a>
+    </Link>
   );
 }
 

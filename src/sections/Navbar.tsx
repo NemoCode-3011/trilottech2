@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { Link } from "react-router-dom";
 import { Menu } from "lucide-react";
@@ -19,6 +19,7 @@ const NAV_LINKS: NavLink[] = [
 function Navbar() {
   const scrolled = useScrollProgress(24);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const menuTriggerRef = useRef<HTMLButtonElement>(null);
   const [hovered, setHovered] = useState<string>(NAV_LINKS[0].href);
 
   return (
@@ -128,6 +129,7 @@ function Navbar() {
           <div className="flex items-center gap-1">
             <ThemeToggle />
             <button
+              ref={menuTriggerRef}
               type="button"
               onClick={() => setMobileOpen(true)}
               aria-label="Open menu"
@@ -143,7 +145,11 @@ function Navbar() {
 
       <AnimatePresence>
         {mobileOpen && (
-          <MobileMenu links={NAV_LINKS} onClose={() => setMobileOpen(false)} />
+          <MobileMenu
+            links={NAV_LINKS}
+            onClose={() => setMobileOpen(false)}
+            triggerRef={menuTriggerRef}
+          />
         )}
       </AnimatePresence>
     </>
