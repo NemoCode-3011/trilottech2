@@ -60,11 +60,11 @@ function ProjectPreview({
         />
 
         <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between sm:bottom-5 sm:left-5 sm:right-5">
-          <span className="bg-trilot-paper/90 px-3 py-1 font-mono text-[0.58rem] uppercase tracking-widest text-trilot-navy">
+          <span className="bg-trilot-paper/90 px-3 py-1 font-mono text-[0.58rem] uppercase tracking-widest text-trilot-navy dark:bg-trilot-ink/90 dark:text-trilot-paper">
             {project.number} / 04
           </span>
 
-          <span className="bg-trilot-paper/90 px-3 py-1 font-mono text-[0.58rem] uppercase tracking-widest text-trilot-navy">
+          <span className="bg-trilot-paper/90 px-3 py-1 font-mono text-[0.58rem] uppercase tracking-widest text-trilot-navy dark:bg-trilot-ink/90 dark:text-trilot-paper">
             Preview
           </span>
         </div>
@@ -88,16 +88,20 @@ function ProjectRow({
       onMouseEnter={onActivate}
       onFocus={onActivate}
       className={[
-        "group block border-b border-trilot-navy/15 py-6 transition-colors sm:py-7",
+        "group block border-b border-trilot-navy/15 py-6 transition-colors dark:border-trilot-paper/15 sm:py-7",
         "focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-trilot-coral",
-        isActive ? "text-trilot-navy" : "text-trilot-navy/45",
+        isActive
+          ? "text-trilot-navy dark:text-trilot-paper"
+          : "text-trilot-navy/45 dark:text-trilot-paper/45",
       ].join(" ")}
     >
       <div className="flex items-start gap-4 sm:gap-6">
         <span
           className={[
             "pt-1 font-mono text-[0.62rem] tracking-widest transition-colors",
-            isActive ? "text-trilot-coral" : "text-trilot-navy/35",
+            isActive
+              ? "text-trilot-coral"
+              : "text-trilot-navy/35 dark:text-trilot-paper/35",
           ].join(" ")}
         >
           {project.number}
@@ -115,7 +119,7 @@ function ProjectRow({
                 "pt-1 text-xl transition-all duration-300",
                 isActive
                   ? "translate-x-1 text-trilot-coral"
-                  : "text-trilot-navy/25 group-hover:translate-x-1 group-hover:text-trilot-navy/70",
+                  : "text-trilot-navy/25 group-hover:translate-x-1 group-hover:text-trilot-navy/70 dark:text-trilot-paper/25 dark:group-hover:text-trilot-paper/70",
               ].join(" ")}
             >
               ↗
@@ -125,7 +129,9 @@ function ProjectRow({
           <p
             className={[
               "mt-2 font-mono text-[0.58rem] uppercase tracking-widest transition-colors",
-              isActive ? "text-trilot-navy/55" : "text-trilot-navy/35",
+              isActive
+                ? "text-trilot-navy/55 dark:text-trilot-paper/55"
+                : "text-trilot-navy/35 dark:text-trilot-paper/35",
             ].join(" ")}
           >
             {project.category}
@@ -134,7 +140,9 @@ function ProjectRow({
           <p
             className={[
               "mt-4 max-w-md text-sm leading-relaxed transition-colors sm:text-base",
-              isActive ? "text-trilot-navy/65" : "text-trilot-navy/40",
+              isActive
+                ? "text-trilot-navy/65 dark:text-trilot-paper/65"
+                : "text-trilot-navy/40 dark:text-trilot-paper/40",
             ].join(" ")}
           >
             {project.description}
@@ -163,7 +171,7 @@ export default function Work() {
     <section
       id="work"
       aria-labelledby="work-heading"
-      className="bg-trilot-paper text-trilot-navy"
+      className="scroll-mt-28 bg-trilot-paper text-trilot-navy dark:bg-trilot-ink dark:text-trilot-paper"
     >
       <Container className="py-24 sm:py-32 lg:py-40">
         <div className="grid gap-16 lg:grid-cols-[1fr_1fr] lg:items-start lg:gap-20 xl:gap-28">
@@ -184,7 +192,7 @@ export default function Work() {
               construction, and local brands.
             </p>
 
-            <div className="mt-12 border-t border-trilot-navy/15">
+            <div className="mt-12 border-t border-trilot-navy/15 dark:border-trilot-paper/15">
               {workItems.map((project, index) => (
                 <ProjectRow
                   key={project.number}
@@ -204,7 +212,7 @@ export default function Work() {
               />
             </div>
 
-            <div className="mt-6 flex items-center justify-between font-mono text-[0.58rem] uppercase tracking-[0.12em] text-trilot-navy/40">
+            <div className="mt-6 flex items-center justify-between font-mono text-[0.58rem] uppercase tracking-[0.12em] text-trilot-navy/40 dark:text-trilot-paper/40">
               <span>{String(activeIndex + 1).padStart(2, "0")} / 04</span>
 
               <span>{activeProject.category}</span>

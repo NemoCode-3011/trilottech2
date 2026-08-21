@@ -56,12 +56,12 @@ export default function Footer() {
             <ul className="mt-5 space-y-3">
               {navigation.map((item) => (
                 <li key={item.label}>
-                  <a
-                    href={item.href}
+                  <Link
+                    to={item.href}
                     className="text-sm text-current/75 transition-colors hover:text-trilot-coral focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-trilot-coral"
                   >
                     {item.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -75,12 +75,12 @@ export default function Footer() {
             <ul className="mt-5 space-y-3">
               {services.map((service) => (
                 <li key={service.label}>
-                  <a
-                    href={service.href}
+                  <Link
+                    to={service.href}
                     className="text-sm text-current/75 transition-colors hover:text-trilot-coral focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-trilot-coral"
                   >
                     {service.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>

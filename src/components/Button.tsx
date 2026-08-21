@@ -1,5 +1,8 @@
 import type { AnchorHTMLAttributes, ReactNode } from "react";
+import { Link } from "react-router-dom";
 import { motion } from "motion/react";
+
+const MotionLink = motion(Link);
 
 type ButtonProps = Omit<
   AnchorHTMLAttributes<HTMLAnchorElement>,
@@ -34,13 +37,32 @@ export function Button({
         ? "bg-trilot-coral-strong text-trilot-paper hover:bg-trilot-navy"
         : "border border-trilot-navy/20 bg-transparent text-trilot-navy hover:bg-trilot-navy hover:text-trilot-paper dark:border-trilot-paper/25 dark:text-trilot-paper dark:hover:bg-trilot-paper dark:hover:text-trilot-navy";
 
+  const buttonClassName = `${baseStyles} ${variantStyles} ${className}`;
+  const { href, ...linkProps } = props;
+
+  if (href?.startsWith("/")) {
+    return (
+      <MotionLink
+        to={href}
+        className={buttonClassName}
+        whileHover={{ y: -3 }}
+        whileTap={{ scale: 0.97 }}
+        transition={{ duration: 0.18 }}
+        {...linkProps}
+      >
+        {children}
+      </MotionLink>
+    );
+  }
+
   return (
     <motion.a
-      className={`${baseStyles} ${variantStyles} ${className}`}
+      className={buttonClassName}
       whileHover={{ y: -3 }}
       whileTap={{ scale: 0.97 }}
       transition={{ duration: 0.18 }}
-      {...props}
+      href={href}
+      {...linkProps}
     >
       {children}
     </motion.a>

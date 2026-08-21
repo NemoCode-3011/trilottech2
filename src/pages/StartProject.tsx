@@ -34,10 +34,7 @@ export default function StartProject() {
   const [status, setStatus] = useState<FormStatus>("idle");
   const [message, setMessage] = useState("");
 
-  function updateField(
-    field: keyof ProjectFormData,
-    value: string,
-  ) {
+  function updateField(field: keyof ProjectFormData, value: string) {
     setFormData((current) => ({
       ...current,
       [field]: value,
@@ -82,11 +79,11 @@ export default function StartProject() {
   }
 
   return (
-    <main className="min-h-screen bg-trilot-paper text-trilot-navy">
+    <main className="min-h-screen bg-trilot-paper text-trilot-navy dark:bg-trilot-ink dark:text-trilot-paper">
       <Container className="py-8 sm:py-10 lg:py-12">
         <Link
           to="/"
-          className="group inline-flex items-center gap-2 font-mono text-[0.62rem] uppercase tracking-[0.12em] text-trilot-navy/60 transition-colors hover:text-trilot-coral focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-trilot-coral"
+          className="group inline-flex items-center gap-2 font-mono text-[0.62rem] uppercase tracking-[0.12em] text-trilot-navy/60 transition-colors hover:text-trilot-coral focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-trilot-coral dark:text-trilot-paper/60"
         >
           <ArrowLeft
             aria-hidden="true"
@@ -109,17 +106,17 @@ export default function StartProject() {
               START A PROJECT
             </p>
 
-            <h1 className="mt-6 max-w-[8ch] font-display text-6xl font-semibold leading-[0.86] tracking-[-0.08em] sm:text-7xl lg:text-8xl">
+            <h1 className="mt-6 max-w-[8ch] font-display text-5xl font-semibold leading-[0.86] tracking-[-0.08em] sm:text-7xl lg:text-8xl">
               Have a digital project in mind?
             </h1>
 
-            <p className="mt-8 max-w-sm text-base leading-relaxed text-trilot-navy/60 sm:text-lg">
+            <p className="mt-8 max-w-sm text-base leading-relaxed text-trilot-navy/60 dark:text-trilot-paper/60 sm:text-lg">
               Whether you need a clearer website, a useful web application, or
               support for something you already have, tell us what you’re
               working on.
             </p>
 
-            <p className="mt-10 max-w-sm font-mono text-[0.58rem] uppercase tracking-[0.12em] text-trilot-navy/45">
+            <p className="mt-10 max-w-sm font-mono text-[0.58rem] uppercase tracking-[0.12em] text-trilot-navy/45 dark:text-trilot-paper/45">
               Fields marked with an asterisk are required.
             </p>
           </motion.header>
@@ -136,7 +133,7 @@ export default function StartProject() {
             <form
               noValidate
               onSubmit={handleSubmit}
-              className="border-t border-trilot-navy/20"
+              className="border-t border-trilot-navy/20 dark:border-trilot-paper/20"
             >
               <div
                 aria-live="polite"
@@ -157,9 +154,9 @@ export default function StartProject() {
                     Thanks. We’ll be in touch.
                   </h2>
 
-                  <p className="mt-6 max-w-lg text-base leading-relaxed text-trilot-navy/60">
-                    Your project details are on their way. We’ll review them
-                    and respond as soon as we can.
+                  <p className="mt-6 max-w-lg text-base leading-relaxed text-trilot-navy/60 dark:text-trilot-paper/60">
+                    Your project details are on their way. We’ll review them and
+                    respond as soon as we can.
                   </p>
 
                   <Link
@@ -171,9 +168,9 @@ export default function StartProject() {
                   </Link>
                 </div>
               ) : (
-                <div className="divide-y divide-trilot-navy/15">
+                <div className="divide-y divide-trilot-navy/15 dark:divide-trilot-paper/15">
                   <fieldset className="py-8 sm:py-10">
-                    <legend className="font-mono text-[0.6rem] uppercase tracking-[0.12em] text-trilot-navy/45">
+                    <legend className="font-mono text-[0.6rem] uppercase tracking-[0.12em] text-trilot-navy/45 dark:text-trilot-paper/45">
                       About you
                     </legend>
 
@@ -183,7 +180,13 @@ export default function StartProject() {
                           htmlFor="name"
                           className="block text-sm font-medium"
                         >
-                          Name <span aria-hidden="true" className="text-trilot-coral">*</span>
+                          Name{" "}
+                          <span
+                            aria-hidden="true"
+                            className="text-trilot-coral"
+                          >
+                            *
+                          </span>
                         </label>
 
                         <input
@@ -196,7 +199,7 @@ export default function StartProject() {
                           onChange={(event) =>
                             updateField("name", event.target.value)
                           }
-                          className="mt-3 w-full border-b border-trilot-navy/30 bg-transparent px-0 py-3 text-base outline-none transition-colors placeholder:text-trilot-navy/35 focus:border-trilot-coral"
+                          className="mt-3 w-full border-b border-trilot-navy/30 bg-transparent px-0 py-3 text-base outline-none transition-colors placeholder:text-trilot-navy/35 focus:border-trilot-coral dark:border-trilot-paper/30 dark:placeholder:text-trilot-paper/35"
                           placeholder="Your full name"
                         />
                       </div>
@@ -206,7 +209,13 @@ export default function StartProject() {
                           htmlFor="email"
                           className="block text-sm font-medium"
                         >
-                          Email <span aria-hidden="true" className="text-trilot-coral">*</span>
+                          Email{" "}
+                          <span
+                            aria-hidden="true"
+                            className="text-trilot-coral"
+                          >
+                            *
+                          </span>
                         </label>
 
                         <input
@@ -220,7 +229,7 @@ export default function StartProject() {
                           onChange={(event) =>
                             updateField("email", event.target.value)
                           }
-                          className="mt-3 w-full border-b border-trilot-navy/30 bg-transparent px-0 py-3 text-base outline-none transition-colors placeholder:text-trilot-navy/35 focus:border-trilot-coral"
+                          className="mt-3 w-full border-b border-trilot-navy/30 bg-transparent px-0 py-3 text-base outline-none transition-colors placeholder:text-trilot-navy/35 focus:border-trilot-coral dark:border-trilot-paper/30 dark:placeholder:text-trilot-paper/35"
                           placeholder="you@business.com"
                         />
                       </div>
@@ -232,7 +241,7 @@ export default function StartProject() {
                         className="block text-sm font-medium"
                       >
                         Business name{" "}
-                        <span className="font-normal text-trilot-navy/45">
+                        <span className="font-normal text-trilot-navy/45 dark:text-trilot-paper/45">
                           (optional)
                         </span>
                       </label>
@@ -246,14 +255,14 @@ export default function StartProject() {
                         onChange={(event) =>
                           updateField("business", event.target.value)
                         }
-                        className="mt-3 w-full border-b border-trilot-navy/30 bg-transparent px-0 py-3 text-base outline-none transition-colors placeholder:text-trilot-navy/35 focus:border-trilot-coral"
+                        className="mt-3 w-full border-b border-trilot-navy/30 bg-transparent px-0 py-3 text-base outline-none transition-colors placeholder:text-trilot-navy/35 focus:border-trilot-coral dark:border-trilot-paper/30 dark:placeholder:text-trilot-paper/35"
                         placeholder="Your business or organisation"
                       />
                     </div>
                   </fieldset>
 
                   <fieldset className="py-8 sm:py-10">
-                    <legend className="font-mono text-[0.6rem] uppercase tracking-[0.12em] text-trilot-navy/45">
+                    <legend className="font-mono text-[0.6rem] uppercase tracking-[0.12em] text-trilot-navy/45 dark:text-trilot-paper/45">
                       About the work
                     </legend>
 
@@ -263,7 +272,9 @@ export default function StartProject() {
                         className="block text-sm font-medium"
                       >
                         What do you need help with?{" "}
-                        <span aria-hidden="true" className="text-trilot-coral">*</span>
+                        <span aria-hidden="true" className="text-trilot-coral">
+                          *
+                        </span>
                       </label>
 
                       <select
@@ -274,7 +285,7 @@ export default function StartProject() {
                         onChange={(event) =>
                           updateField("service", event.target.value)
                         }
-                        className="mt-3 w-full border-b border-trilot-navy/30 bg-transparent px-0 py-3 text-base outline-none transition-colors focus:border-trilot-coral"
+                        className="mt-3 w-full border-b border-trilot-navy/30 bg-transparent px-0 py-3 text-base outline-none transition-colors focus:border-trilot-coral dark:border-trilot-paper/30"
                       >
                         <option value="" disabled>
                           Choose one
@@ -290,9 +301,7 @@ export default function StartProject() {
                         <option value="Support">
                           Ongoing support or improvements
                         </option>
-                        <option value="Not sure yet">
-                          I’m not sure yet
-                        </option>
+                        <option value="Not sure yet">I’m not sure yet</option>
                       </select>
                     </div>
 
@@ -302,12 +311,14 @@ export default function StartProject() {
                         className="block text-sm font-medium"
                       >
                         Tell us a little about it{" "}
-                        <span aria-hidden="true" className="text-trilot-coral">*</span>
+                        <span aria-hidden="true" className="text-trilot-coral">
+                          *
+                        </span>
                       </label>
 
                       <p
                         id="details-hint"
-                        className="mt-2 text-sm leading-relaxed text-trilot-navy/50"
+                        className="mt-2 text-sm leading-relaxed text-trilot-navy/50 dark:text-trilot-paper/50"
                       >
                         What are you trying to achieve, and what would a useful
                         outcome look like?
@@ -323,14 +334,14 @@ export default function StartProject() {
                         onChange={(event) =>
                           updateField("details", event.target.value)
                         }
-                        className="mt-4 w-full resize-y border border-trilot-navy/25 bg-transparent p-4 text-base leading-relaxed outline-none transition-colors placeholder:text-trilot-navy/35 focus:border-trilot-coral"
+                        className="mt-4 w-full resize-y border border-trilot-navy/25 bg-transparent p-4 text-base leading-relaxed outline-none transition-colors placeholder:text-trilot-navy/35 focus:border-trilot-coral dark:border-trilot-paper/25 dark:placeholder:text-trilot-paper/35"
                         placeholder="Tell us about your business, what you need, and anything else that would be helpful."
                       />
                     </div>
                   </fieldset>
 
                   <fieldset className="py-8 sm:py-10">
-                    <legend className="font-mono text-[0.6rem] uppercase tracking-[0.12em] text-trilot-navy/45">
+                    <legend className="font-mono text-[0.6rem] uppercase tracking-[0.12em] text-trilot-navy/45 dark:text-trilot-paper/45">
                       Optional details
                     </legend>
 
@@ -341,7 +352,7 @@ export default function StartProject() {
                           className="block text-sm font-medium"
                         >
                           Budget range{" "}
-                          <span className="font-normal text-trilot-navy/45">
+                          <span className="font-normal text-trilot-navy/45 dark:text-trilot-paper/45">
                             (optional)
                           </span>
                         </label>
@@ -353,7 +364,7 @@ export default function StartProject() {
                           onChange={(event) =>
                             updateField("budget", event.target.value)
                           }
-                          className="mt-3 w-full border-b border-trilot-navy/30 bg-transparent px-0 py-3 text-base outline-none transition-colors focus:border-trilot-coral"
+                          className="mt-3 w-full border-b border-trilot-navy/30 bg-transparent px-0 py-3 text-base outline-none transition-colors focus:border-trilot-coral dark:border-trilot-paper/30"
                         >
                           <option value="">Prefer not to say</option>
                           <option value="Under ₦500k">Under ₦500k</option>
@@ -370,7 +381,7 @@ export default function StartProject() {
                           className="block text-sm font-medium"
                         >
                           Timeline{" "}
-                          <span className="font-normal text-trilot-navy/45">
+                          <span className="font-normal text-trilot-navy/45 dark:text-trilot-paper/45">
                             (optional)
                           </span>
                         </label>
@@ -382,7 +393,7 @@ export default function StartProject() {
                           onChange={(event) =>
                             updateField("timeline", event.target.value)
                           }
-                          className="mt-3 w-full border-b border-trilot-navy/30 bg-transparent px-0 py-3 text-base outline-none transition-colors focus:border-trilot-coral"
+                          className="mt-3 w-full border-b border-trilot-navy/30 bg-transparent px-0 py-3 text-base outline-none transition-colors focus:border-trilot-coral dark:border-trilot-paper/30"
                         >
                           <option value="">Not sure yet</option>
                           <option value="As soon as possible">
@@ -391,12 +402,8 @@ export default function StartProject() {
                           <option value="Within one month">
                             Within one month
                           </option>
-                          <option value="In 1–3 months">
-                            In 1–3 months
-                          </option>
-                          <option value="In 3–6 months">
-                            In 3–6 months
-                          </option>
+                          <option value="In 1–3 months">In 1–3 months</option>
+                          <option value="In 3–6 months">In 3–6 months</option>
                         </select>
                       </div>
                     </div>
@@ -429,7 +436,7 @@ export default function StartProject() {
                       </span>
                     </button>
 
-                    <p className="max-w-xs text-sm leading-relaxed text-trilot-navy/45">
+                    <p className="max-w-xs text-sm leading-relaxed text-trilot-navy/45 dark:text-trilot-paper/45">
                       We’ll only use these details to respond to your project
                       enquiry.
                     </p>

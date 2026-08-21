@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { AnimatePresence } from "motion/react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 
 import { SplashScreen } from "./components/SplashScreen";
 import { ThemeProvider } from "./context/ThemeContext";
@@ -16,13 +16,35 @@ import Footer from "./sections/Footer";
 import ProjectPage from "./pages/ProjectPage";
 import StartProject from "./pages/StartProject";
 
-function HomePage() {
+function HashScroll() {
+  const { pathname, hash } = useLocation();
+
+  useEffect(() => {
+    const targetId = hash.slice(1);
+
+    if (!targetId) {
+      window.scrollTo(0, 0);
+      return;
+    }
+
+    window.requestAnimationFrame(() => {
+      document.getElementById(targetId)?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    });
+  }, [pathname, hash]);
+
+  return null;
+}
+
+function HomePage({ showSplash }: { showSplash: boolean }) {
   return (
     <>
       <Navbar />
 
       <main>
-        <Hero />
+        <Hero key={showSplash ? "hero-hidden" : "hero-visible"} />
         <TrustStrip />
         <Services />
         <Process />
@@ -72,6 +94,7 @@ export function App() {
 
   return (
     <BrowserRouter>
+      <HashScroll />
       <ThemeProvider>
         <AnimatePresence mode="wait">
           {showSplash && <SplashScreen onComplete={completeSplash} />}
@@ -82,7 +105,7 @@ export function App() {
           className={showSplash ? "pointer-events-none" : ""}
         >
           <Routes>
-            <Route path="/" element={<HomePage />} />
+            <Route path="/" element={<HomePage showSplash={showSplash} />} />
 
             <Route path="/start-project" element={<StartProjectPage />} />
 

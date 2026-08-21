@@ -1,5 +1,6 @@
 import { motion, useReducedMotion } from "motion/react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Container } from "../components/Container";
 import { services } from "../data/services";
 import { easeOut } from "../lib/motion";
@@ -103,14 +104,14 @@ function ServiceRow({
                 {service.description}
               </p>
 
-              <a
-                href={service.href}
+              <Link
+                to={service.href}
                 onClick={(event) => event.stopPropagation()}
                 className="inline-flex items-center gap-2 self-start border-b border-(--color-on-surface)/40 pb-1 text-sm font-medium transition-colors hover:border-trilot-coral hover:text-trilot-coral focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-trilot-coral sm:self-end"
               >
                 Explore service
                 <span aria-hidden="true">↗</span>
-              </a>
+              </Link>
             </div>
 
             <div className="mt-7 flex flex-wrap gap-x-5 gap-y-2">

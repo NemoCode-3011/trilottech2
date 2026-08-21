@@ -1,11 +1,13 @@
 import { useEffect, useRef } from "react";
 import { motion } from "motion/react";
+import { Link } from "react-router-dom";
 import { X } from "lucide-react";
 import { Button } from "./Button";
 import { ThemeToggle } from "./ThemeToggle";
 import type { RefObject } from "react";
 
 const easeOut = [0.22, 1, 0.36, 1] as const;
+const MotionLink = motion(Link);
 
 export type NavLink = {
   label: string;
@@ -27,6 +29,7 @@ export function MobileMenu({ links, onClose, triggerRef }: MobileMenuProps) {
 
   useEffect(() => {
     closeButtonRef.current?.focus();
+    const trigger = triggerRef?.current;
 
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -61,9 +64,9 @@ export function MobileMenu({ links, onClose, triggerRef }: MobileMenuProps) {
     return () => {
       document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", handleKeyDown);
-      triggerRef?.current?.focus();
+      trigger?.focus();
     };
-  }, [onClose]);
+  }, [onClose, triggerRef]);
 
   return (
     <motion.div
@@ -71,7 +74,7 @@ export function MobileMenu({ links, onClose, triggerRef }: MobileMenuProps) {
       role="dialog"
       aria-modal="true"
       aria-label="Site navigation"
-      className="nav-glass nav-glass--scrolled fixed inset-0 z-[60] flex min-h-0 flex-col overflow-y-auto rounded-none border-0 md:hidden"
+      className="nav-glass nav-glass--scrolled fixed inset-0 z-60 flex min-h-0 flex-col overflow-y-auto rounded-none border-0 md:hidden"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{
@@ -84,14 +87,14 @@ export function MobileMenu({ links, onClose, triggerRef }: MobileMenuProps) {
       transition={{ duration: 0.4, ease: easeOut }}
     >
       <div className="flex shrink-0 items-center justify-between px-6 pt-[max(1.25rem,env(safe-area-inset-top))]">
-        <a
-          href="/#home"
+        <Link
+          to="/#home"
           onClick={onClose}
           className="flex items-center gap-2"
           aria-label="Trilot home"
         >
           <img src="/assets/logo2.png" alt="" className="h-6 w-auto" />
-        </a>
+        </Link>
 
         <div className="flex items-center gap-1">
           <ThemeToggle />
@@ -100,7 +103,7 @@ export function MobileMenu({ links, onClose, triggerRef }: MobileMenuProps) {
             type="button"
             onClick={onClose}
             aria-label="Close menu"
-            className="flex size-9 items-center justify-center rounded-full transition-colors duration-200 hover:bg-[var(--nav-hover-bg)]"
+            className="flex size-9 items-center justify-center rounded-full transition-colors duration-200 hover:bg-(--nav-hover-bg)"
             style={{ color: "var(--nav-text)" }}
           >
             <X size={20} />
@@ -110,9 +113,9 @@ export function MobileMenu({ links, onClose, triggerRef }: MobileMenuProps) {
 
       <nav className="flex min-h-0 flex-1 flex-col justify-center gap-1 overflow-y-auto px-8 py-8">
         {links.map((link, index) => (
-          <motion.a
+          <MotionLink
             key={link.href}
-            href={link.href}
+            to={link.href}
             onClick={onClose}
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
@@ -130,7 +133,7 @@ export function MobileMenu({ links, onClose, triggerRef }: MobileMenuProps) {
               style={{ background: "var(--color-trilot-coral)" }}
             />
             {link.label}
-          </motion.a>
+          </MotionLink>
         ))}
       </nav>
 

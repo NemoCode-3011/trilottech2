@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
+import { Link } from "react-router-dom";
 import { Menu } from "lucide-react";
 import { Button } from "../components/Button";
 import { ThemeToggle } from "../components/ThemeToggle";
@@ -10,7 +11,6 @@ const easeOut = [0.22, 1, 0.36, 1] as const;
 
 const NAV_LINKS: NavLink[] = [
   { label: "Home", href: "/#home" },
-  { label: "How we work", href: "/#process" },
   { label: "Portfolio", href: "/#work" },
   { label: "Services", href: "/#services" },
   { label: "Contact", href: "/#contact" },
@@ -35,8 +35,8 @@ function Navbar() {
             scrolled ? "px-5 py-2" : "px-6 py-3.5"
           }`}
         >
-          <a
-            href="/#home"
+          <Link
+            to="/#home"
             className="flex shrink-0 items-center gap-2.5"
             aria-label="Trilot home"
           >
@@ -47,16 +47,16 @@ function Navbar() {
             >
               Trilot
             </span>
-          </a>
+          </Link>
 
           <nav
             className="relative flex items-center gap-1"
             onMouseLeave={() => setHovered(NAV_LINKS[0].href)}
           >
             {NAV_LINKS.map((link) => (
-              <a
+              <Link
                 key={link.href}
-                href={link.href}
+                to={link.href}
                 onMouseEnter={() => setHovered(link.href)}
                 className="relative px-4 py-2 text-sm font-semibold transition-colors duration-200"
                 style={{
@@ -86,7 +86,7 @@ function Navbar() {
                     transition={{ type: "spring", stiffness: 420, damping: 32 }}
                   />
                 )}
-              </a>
+              </Link>
             ))}
           </nav>
 
@@ -117,13 +117,13 @@ function Navbar() {
               : undefined
           }
         >
-          <a
-            href="/#home"
+          <Link
+            to="/#home"
             className="flex shrink-0 items-center"
             aria-label="Trilot home"
           >
             <img src="/assets/logo2.png" alt="" className="h-6 w-auto" />
-          </a>
+          </Link>
 
           <div className="flex items-center gap-1">
             <ThemeToggle />

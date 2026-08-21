@@ -26,7 +26,7 @@ export default function Hero() {
     event: KeyboardEvent<HTMLButtonElement>,
     index: number,
   ) {
-    let nextIndex = index;
+    let nextIndex: number;
 
     if (event.key === "ArrowRight" || event.key === "ArrowDown") {
       nextIndex = (index + 1) % heroPaths.length;
@@ -45,28 +45,80 @@ export default function Hero() {
     tabRefs.current[nextIndex]?.focus();
   }
 
+  // Entrance choreography: rings, then pills, then headline block, then the
+  // scroll cue — same top-to-bottom stagger rhythm the splash screen uses,
+  // so opening the page reads as one continuous motion system.
+  const container = {
+    hidden: {},
+    show: {
+      transition: {
+        staggerChildren: reduceMotion ? 0 : 0.14,
+        delayChildren: reduceMotion ? 0 : 0.05,
+      },
+    },
+  };
+
+  const item = {
+    hidden: { opacity: 0, y: reduceMotion ? 0 : 14 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: reduceMotion ? 0 : 0.6, ease: easeOut },
+    },
+  };
+
   return (
     <section
       id="home"
       className="relative isolate flex min-h-[calc(100svh-4.5rem)] flex-col overflow-hidden bg-trilot-navy text-trilot-paper dark:bg-trilot-ink sm:min-h-[calc(100svh-6rem)]"
     >
-      {/* Quiet atmosphere, not decoration: two large hollow rings, mostly
-          off-canvas, barely visible — the same ring device the old hero
-          used as a tiny corner accent, scaled up to actually carry the
-          background instead of a photo. */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
       >
-        <span className="absolute -right-40 -top-56 h-16842rem] rounded-full border border-trilot-paper/10" />
-        <span className="absolute -bottom-64 -left-48 h-144 w-xl rounded-full border border-trilot-blue/15" />
+        {reduceMotion ? (
+          <>
+            <span className="absolute -right-40 -top-56 h-168 w-2xl rounded-full border border-trilot-paper/10" />
+            <span className="absolute -bottom-64 -left-48 h-144 w-xl rounded-full border border-trilot-blue/15" />
+          </>
+        ) : (
+          <>
+            <motion.span
+              className="absolute -right-40 -top-56 h-168 w-2xl rounded-full border border-trilot-paper/10"
+              initial={{ scale: 1 }}
+              animate={{ scale: [1, 1.045, 1] }}
+              transition={{
+                duration: 46,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+            <motion.span
+              className="absolute -bottom-64 -left-48 h-144 w-xl rounded-full border border-trilot-blue/15"
+              initial={{ scale: 1 }}
+              animate={{ scale: [1, 1.06, 1] }}
+              transition={{
+                duration: 38,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 3,
+              }}
+            />
+          </>
+        )}
       </div>
 
-      <Container className="relative z-10 flex min-h-0 flex-1 flex-col justify-center px-5 py-24 sm:px-8 sm:py-28">
-        <div className="max-w-3xl">
+      <Container className="relative z-10 flex min-h-0 flex-1 flex-col justify-center px-5 py-16 sm:px-8 sm:py-24">
+        <motion.div
+          className="max-w-3xl"
+          variants={container}
+          initial="hidden"
+          animate="show"
+        >
           {/* Compact path switcher — secondary to the headline, not
               competing with it */}
-          <div
+          <motion.div
+            variants={item}
             role="tablist"
             aria-label="Choose your project situation"
             className="flex flex-wrap gap-2"
@@ -75,7 +127,7 @@ export default function Hero() {
               const isActive = index === activeIndex;
 
               return (
-                <button
+                <motion.button
                   key={path.id}
                   ref={(element) => {
                     tabRefs.current[index] = element;
@@ -88,6 +140,9 @@ export default function Hero() {
                   tabIndex={isActive ? 0 : -1}
                   onClick={() => selectPath(index)}
                   onKeyDown={(event) => handleTabKeyDown(event, index)}
+                  whileHover={reduceMotion ? undefined : { scale: 1.035 }}
+                  whileTap={reduceMotion ? undefined : { scale: 0.97 }}
+                  transition={{ duration: 0.15, ease: easeOut }}
                   className={[
                     "flex items-center gap-2 rounded-full border px-3.5 py-1.5 font-mono text-[0.68rem] tracking-[0.04em] transition-colors focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-trilot-coral",
                     isActive
@@ -97,18 +152,19 @@ export default function Hero() {
                 >
                   <span className="opacity-70">{path.number}</span>
                   {path.label}
-                </button>
+                </motion.button>
               );
             })}
-          </div>
+          </motion.div>
 
           {/* Content panel */}
-          <div
+          <motion.div
+            variants={item}
             id={`hero-panel-${activePath.id}`}
             role="tabpanel"
             aria-labelledby={`hero-tab-${activePath.id}`}
             tabIndex={0}
-            className="relative mt-8 min-h-72 focus-visible:outline focus-visible:outline-trilot-coral focus-visible:outline-offset-4 sm:min-h-64"
+            className="relative mt-8 min-h-64 focus-visible:outline focus-visible:outline-trilot-coral focus-visible:outline-offset-4 sm:min-h-104 lg:min-h-104"
           >
             <AnimatePresence initial={false} mode="sync">
               <motion.div
@@ -152,8 +208,34 @@ export default function Hero() {
                 </div>
               </motion.div>
             </AnimatePresence>
+          </motion.div>
+        </motion.div>
+
+        {/* Quiet scroll cue — invites visitors past the fold toward Process
+            and Work instead of stopping here. Fades in last. */}
+        <motion.div
+          variants={item}
+          initial="hidden"
+          animate="show"
+          transition={{ delay: reduceMotion ? 0 : 0.6 }}
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 bottom-8 hidden justify-center sm:flex"
+        >
+          <div className="flex flex-col items-center gap-2">
+            <span className="h-10 w-px bg-trilot-paper/25" />
+            {!reduceMotion && (
+              <motion.span
+                className="size-1 rounded-full bg-trilot-paper/50"
+                animate={{ y: [0, 10, 0], opacity: [0.6, 1, 0.6] }}
+                transition={{
+                  duration: 1.8,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              />
+            )}
           </div>
-        </div>
+        </motion.div>
       </Container>
     </section>
   );

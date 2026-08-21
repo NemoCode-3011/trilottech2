@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "motion/react";
 import { Moon, Sun } from "lucide-react";
-import { useTheme } from "../context/ThemeContext";
+import { useTheme } from "../context/useTheme";
 
 const easeOut = [0.22, 1, 0.36, 1] as const;
 
