@@ -29,7 +29,7 @@ export default function PrivacyPage() {
 
           <div className="mt-14 space-y-10 border-t border-(--color-on-surface)/15 pt-10 text-base leading-relaxed text-(--color-on-surface)/70 sm:text-lg">
             <section>
-              <h2 className="font-display text-3xl font-semibold tracking-[-0.05em] text-(--color-on-surface)">
+              <h2 className="font-display text-3xl font-semibold tracking-tighter text-(--color-on-surface)">
                 What we collect
               </h2>
               <p className="mt-3">
@@ -39,7 +39,7 @@ export default function PrivacyPage() {
               </p>
             </section>
             <section>
-              <h2 className="font-display text-3xl font-semibold tracking-[-0.05em] text-(--color-on-surface)">
+              <h2 className="font-display text-3xl font-semibold tracking-tighter text-(--color-on-surface)">
                 How we use it
               </h2>
               <p className="mt-3">
@@ -48,7 +48,7 @@ export default function PrivacyPage() {
               </p>
             </section>
             <section>
-              <h2 className="font-display text-3xl font-semibold tracking-[-0.05em] text-(--color-on-surface)">
+              <h2 className="font-display text-3xl font-semibold tracking-tighter text-(--color-on-surface)">
                 Contact
               </h2>
               <p className="mt-3">

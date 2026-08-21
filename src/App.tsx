@@ -21,6 +21,8 @@ import ServicesPage from "./pages/ServicesPage";
 import PrivacyPage from "./pages/PrivacyPage";
 import TermsPage from "./pages/TermsPage";
 import SecurityPage from "./pages/SecurityPage";
+import About from "./sections/About";
+import AboutPage from "./pages/AboutPage";
 
 function HashScroll() {
   const { pathname, hash } = useLocation();
@@ -52,6 +54,7 @@ function HomePage({ showSplash }: { showSplash: boolean }) {
       <main>
         <Hero key={showSplash ? "hero-hidden" : "hero-visible"} />
         <TrustStrip />
+        <About />
         <Services />
         <Process />
         <Work />
@@ -139,6 +142,15 @@ function AppContent() {
             <Route path="/start-project" element={<StartProjectPage />} />
 
             <Route path="/services" element={<ServicesPageLayout />} />
+
+            <Route
+              path="/about"
+              element={
+                <LegalPageLayout>
+                  <AboutPage />
+                </LegalPageLayout>
+              }
+            />
 
             <Route
               path="/privacy"

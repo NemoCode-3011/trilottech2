@@ -3,6 +3,7 @@ import { Container } from "../components/Container";
 
 const navigation = [
   { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
   { label: "Services", href: "/#services" },
   { label: "How we work", href: "/#process" },
   { label: "Selected builds", href: "/#work" },

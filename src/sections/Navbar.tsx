@@ -13,6 +13,7 @@ const NAV_LINKS: NavLink[] = [
   { label: "Home", href: "/#home" },
   { label: "Portfolio", href: "/#work" },
   { label: "Services", href: "/#services" },
+  { label: "About", href: "/#about" },
   { label: "Contact", href: "/#contact" },
 ];
 
@@ -32,7 +33,7 @@ function Navbar() {
       >
         {/* Desktop pill */}
         <div
-          className={`nav-glass ${scrolled ? "nav-glass--scrolled" : ""} hidden w-full max-w-3xl items-center justify-between rounded-full md:flex ${
+          className={`nav-glass ${scrolled ? "nav-glass--scrolled" : ""} hidden w-full max-w-4xl items-center justify-between rounded-full md:flex ${
             scrolled ? "px-5 py-2" : "px-6 py-3.5"
           }`}
         >
